@@ -125,39 +125,40 @@ docker run -it --name custom-name sandipduley/neovim-udev /bin/bash
 
 ## 📁 Neovim Folder Structure
 
-            nvim
-            ├── init.lua
-            ├── lazy-lock.json
-            ├── lazyvim.json
-            └── lua
-                ├── core
-                │   ├── keymaps.lua
-                │   ├── options.lua
-                │   └── snippets.lua
-                └── plugins
-                    ├── alpha.lua
-                    ├── autocompletion.lua
-                    ├── bufferline.lua
-                    ├── cmp.lua
-                    ├── colortheme-switcher.lua
-                    ├── comments.lua
-                    ├── debug.lua
-                    ├── extra-plugins.lua
-                    ├── gitsigns.lua
-                    ├── indent-blankline.lua
-                    ├── lazygit.lua
-                    ├── lsp.lua
-                    ├── lualine.lua
-                    ├── extra-plugins.lua
-                    ├── neotree.lua
-                    ├── none-ls.lua
-                    ├── telescope.lua
-                    ├── tiny-inline-diagnostic.lua
-                    ├── treesitter.lua
-                    ├── undotree.lua
-                    └── yazi.lua
+        nvim
+        ├── init.lua
+        ├── lazy-lock.json
+        ├── lazyvim.json
+        └── lua
+            ├── core
+            │   ├── keymaps.lua
+            │   ├── options.lua
+            │   └── snippets.lua
+            └── plugins
+                ├── alpha.lua
+                ├── autocompletion.lua
+                ├── bufferline.lua
+                ├── cmp.lua
+                ├── colortheme-switcher.lua
+                ├── comments.lua
+                ├── debug.lua
+                ├── extra-plugins.lua
+                ├── gitsigns.lua
+                ├── indent-blankline.lua
+                ├── lazygit.lua
+                ├── lsp.lua
+                ├── lualine.lua
+                ├── neotree.lua
+                ├── none-ls.lua
+                ├── render-markdown.lua
+                ├── telescope.lua
+                ├── tiny-inline-diagnostic.lua
+                ├── treesitter.lua
+                ├── undotree.lua
+                └── yazi.lua
 
-### 4 directories, 26 files
+
+#### 4 directories, 27 files
 
 ---
 

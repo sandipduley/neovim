@@ -14,24 +14,37 @@ return {
 		local formatting = null_ls.builtins.formatting
 		local diagnostics = null_ls.builtins.diagnostics
 
-		-- Ensure external formatters are installed
+		-- Mason Null-LS: ONLY formatters & linters
 		mason_null_ls.setup({
 			ensure_installed = {
+				-- Web
 				"prettier",
+
+				-- Lua
 				"stylua",
-				-- "bash-language-server",
-				-- "shfmt",
-				-- "gofumpt",
-				-- "goimports",
-				-- "sqlfluff",
-				"eslint-lsp",
+
+				-- Python
+				"ruff",
+
+				-- Go
+				"gofumpt",
+				"goimports",
+
+				-- Shell
+				"shfmt",
+
+				-- SQL
+				"sqlfluff",
 			},
 			automatic_installation = true,
 		})
 
-		-- Formatters and linters only (no LSP overlap)
+		-- none-ls setup
 		null_ls.setup({
 			sources = {
+
+				-- JavaScript / TypeScript / Web
+
 				formatting.prettier.with({
 					filetypes = {
 						"html",
@@ -47,15 +60,21 @@ return {
 					},
 				}),
 
+				-- Lua
 				formatting.stylua,
 
+				-- Python
 				require("none-ls.formatting.ruff_format"),
+				require("none-ls.diagnostics.ruff"),
 
+				-- Go
 				formatting.gofumpt,
 				formatting.goimports,
 
+				-- Shell
 				formatting.shfmt,
 
+				-- SQL
 				formatting.sqlfluff.with({
 					extra_args = { "--dialect", "mysql" },
 				}),

@@ -62,7 +62,7 @@ vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", opts) -- previous tab
 
 -- quick escape from insert mode
 vim.keymap.set("i", "jj", "<Esc>:w<CR>", opts)
-vim.keymap.set("i", "kj", "<ESC>:w<CR>", opts)
+vim.keymap.set("i", "kk", "<ESC><CR>", opts)
 vim.keymap.set("i", "jk", "<ESC>:w<CR>", opts)
 
 -- visual mode helpers

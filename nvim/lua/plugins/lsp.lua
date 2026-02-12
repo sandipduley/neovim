@@ -3,8 +3,8 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 
 	dependencies = {
-		{ "mason-org/mason.nvim", config = true },
-		"mason-org/mason-lspconfig.nvim",
+		{ "williamboman/mason.nvim", config = true },
+		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		"hrsh7th/cmp-nvim-lsp",
 		{
@@ -23,7 +23,7 @@ return {
 		local highlight_group = api.nvim_create_augroup("LspHighlight", { clear = true })
 		local format_group = api.nvim_create_augroup("LspFormat", { clear = true })
 
-		-- Keymaps, highlights, and formatting on attach
+		-- Keymaps and highlights on attach
 		api.nvim_create_autocmd("LspAttach", {
 			group = attach_group,
 			callback = function(event)
@@ -55,7 +55,6 @@ return {
 						group = highlight_group,
 						callback = lsp.buf.document_highlight,
 					})
-
 					api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 						buffer = buf,
 						group = highlight_group,
@@ -63,17 +62,9 @@ return {
 					})
 				end
 
-				-- Inlay hints toggle
-				if client and client.supports_method(lsp.protocol.Methods.textDocument_inlayHint) then
-					map("<leader>th", function()
-						lsp.inlay_hint.enable(not lsp.inlay_hint.is_enabled({ bufnr = buf }))
-					end, "Toggle Inlay Hints")
-				end
-
-				-- Format on save (delegated to none-ls)
+				-- Format on save (only null-ls)
 				if client and client.supports_method("textDocument/formatting") then
 					api.nvim_clear_autocmds({ group = format_group, buffer = buf })
-
 					api.nvim_create_autocmd("BufWritePre", {
 						group = format_group,
 						buffer = buf,
@@ -97,7 +88,7 @@ return {
 			require("cmp_nvim_lsp").default_capabilities()
 		)
 
-		-- LSP servers (diagnostics & intelligence only)
+		-- LSP servers
 		local servers = {
 			lua_ls = {
 				settings = {
@@ -112,64 +103,56 @@ return {
 					},
 				},
 			},
-
 			pyright = {
 				settings = {
 					python = {
+						pythonPath = vim.fn.exepath("python3"),
 						analysis = {
 							typeCheckingMode = "strict",
-							diagnosticMode = "workspace",
+							diagnosticMode = "openFilesOnly",
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
 						},
 					},
 				},
 			},
-
-			gopls = {
-				settings = {
-					gopls = {
-						gofumpt = false,
-						staticcheck = true,
-					},
-				},
-			},
-
 			ts_ls = {
 				settings = {
 					javascript = { format = { enable = false } },
 					typescript = { format = { enable = false } },
 				},
 			},
+			html = { filetypes = { "html" } },
+			eslint = { settings = { workingDirectory = { mode = "auto" } } },
+			bashls = { settings = { bashIde = { globPattern = "**/*@(.sh|.bash|.zsh|.command)" } } },
+			dockerls = {},
+			docker_compose_language_service = {},
 
-			html = {
-				filetypes = { "html" },
-			},
-
-			-- React / JS / TS linting (optional but recommended)
-			eslint = {
-				settings = {
-					workingDirectory = { mode = "auto" },
+			-- Tailwind CSS LSP
+			tailwindcss = {
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"vue",
+					"svelte",
 				},
-			},
-
-			-- Bash / shell scripts
-			bashls = {
-				settings = {
-					bashIde = {
-						globPattern = "**/*@(.sh|.bash|.zsh|.command)",
+				init_options = {
+					userLanguages = {
+						eelixir = "html",
 					},
 				},
 			},
-
-			dockerls = {},
-			docker_compose_language_service = {},
 		}
 
 		-- Ensure LSP servers are installed
-		require("mason-tool-installer").setup({
-			ensure_installed = vim.tbl_keys(servers),
-		})
+		require("mason-tool-installer").setup({ ensure_installed = vim.tbl_keys(servers) })
 
-		-- Register and enable servers
+		-- Register servers
 		for name, cfg in pairs(servers) do
 			cfg.capabilities = capabilities
 			vim.lsp.config(name, cfg)
@@ -177,4 +160,3 @@ return {
 		end
 	end,
 }
-

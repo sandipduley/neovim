@@ -14,49 +14,35 @@ return {
 		local formatting = null_ls.builtins.formatting
 		local diagnostics = null_ls.builtins.diagnostics
 
-		-- Mason Null-LS: ONLY formatters & linters
+		-- Ensure formatters/linters are installed
 		mason_null_ls.setup({
 			ensure_installed = {
-				-- Web
 				"prettier",
-
-				-- Lua
 				"stylua",
-
-				-- Python
 				"ruff",
-
-				-- Go
 				"gofumpt",
 				"goimports",
-
-				-- Shell
 				"shfmt",
-
-				-- SQL
 				"sqlfluff",
 			},
 			automatic_installation = true,
 		})
 
-		-- none-ls setup
+		-- null-ls setup
 		null_ls.setup({
 			sources = {
-
-				-- JavaScript / TypeScript / Web
-
 				formatting.prettier.with({
 					filetypes = {
 						"html",
-						"json",
-						"yaml",
-						"markdown",
+						"css",
+						"scss",
 						"javascript",
 						"javascriptreact",
 						"typescript",
 						"typescriptreact",
-						"css",
-						"scss",
+						"json",
+						"yaml",
+						"markdown",
 					},
 				}),
 
@@ -75,9 +61,7 @@ return {
 				formatting.shfmt,
 
 				-- SQL
-				formatting.sqlfluff.with({
-					extra_args = { "--dialect", "mysql" },
-				}),
+				formatting.sqlfluff.with({ extra_args = { "--dialect", "mysql" } }),
 				diagnostics.sqlfluff,
 			},
 		})

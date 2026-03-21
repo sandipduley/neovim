@@ -99,17 +99,11 @@ rm -rf ~/.config/nvim\
 
 ---
 
-## 🔌 Installation
+## 🔌 Installation and Setup
 
 ```bash
 git clone --depth=1 https://github.com/sandipduley/Neovim-Setup-v2.git
-```
-
-```bash
 cd Neovim-Setup-v2
-```
-
-```bash
 cp -r nvim/ ~/.config/nvim/
 ```
 

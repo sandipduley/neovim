@@ -1,69 +1,67 @@
--- ui / display
-vim.opt.termguicolors = true        -- enable true color
-vim.wo.number = true               -- absolute line numbers
-vim.o.relativenumber = true        -- relative line numbers
-vim.o.numberwidth = 2              -- number column width
-vim.o.cursorline = true            -- highlight current line
-vim.wo.signcolumn = 'yes'          -- always show signcolumn
-vim.o.showmode = false             -- hide mode text
-vim.o.showtabline = 1              -- show tabline only if needed
-vim.o.cmdheight = 1                -- compact command line
-vim.o.conceallevel = 0             -- show markdown backticks
+-- ── UI / Display ──────────────────────────────────────────────────────────────
+vim.opt.termguicolors = true -- true color
+vim.opt.number = true -- absolute line numbers
+vim.opt.relativenumber = true -- relative line numbers
+vim.opt.numberwidth = 2
+vim.opt.cursorline = true
+vim.opt.signcolumn = "yes" -- always show signcolumn
+vim.opt.showmode = false -- hidden (lualine shows it)
+vim.opt.showtabline = 1 -- only when >1 tab
+vim.opt.cmdheight = 1
+vim.opt.conceallevel = 0 -- show markdown backticks
 
--- window / scrolling
-vim.o.wrap = false                 -- disable line wrap
-vim.o.linebreak = true             -- prevent word breaking
-vim.o.scrolloff = 4                -- context above/below cursor
-vim.o.sidescrolloff = 8            -- context left/right
-vim.o.splitbelow = true            -- horizontal splits below
-vim.o.splitright = true            -- vertical splits right
+-- ── Window / Scrolling ────────────────────────────────────────────────────────
+vim.opt.wrap = false
+vim.opt.linebreak = true -- don't break mid-word
+vim.opt.scrolloff = 4
+vim.opt.sidescrolloff = 8
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 
--- mouse / clipboard
-vim.o.mouse = 'a'                  -- enable mouse
-vim.o.clipboard = 'unnamedplus'    -- sync system clipboard
+-- ── Mouse / Clipboard ─────────────────────────────────────────────────────────
+vim.opt.mouse = "a"
+vim.opt.clipboard = "unnamedplus"
 
--- indentation / tabs
-vim.o.expandtab = true             -- tabs to spaces
-vim.o.shiftwidth = 2               -- indent size
-vim.o.tabstop = 2                  -- tab width
-vim.o.softtabstop = 2              -- editing tab width
-vim.o.smartindent = true           -- smarter indentation
-vim.o.autoindent = true            -- copy indent from current line
-vim.o.breakindent = true           -- wrapped line indentation
+-- ── Indentation ───────────────────────────────────────────────────────────────
+vim.opt.expandtab = true -- tabs → spaces
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.smartindent = true
+vim.opt.autoindent = true
+vim.opt.breakindent = true -- indent wrapped lines
 
--- search
-vim.o.hlsearch = true              -- highlight matches
-vim.o.ignorecase = true            -- case-insensitive search
-vim.o.smartcase = true             -- smart case search
+-- ── Search ────────────────────────────────────────────────────────────────────
+vim.opt.hlsearch = true
+vim.opt.smartcase = true
+-- vim.opt.ignorecase = true   -- uncomment to enable case-insensitive base
 
--- undo / backup / swap
-vim.o.undofile = true              -- persistent undo
-vim.o.backup = false               -- disable backup file
-vim.o.writebackup = false          -- disable write backup
-vim.o.swapfile = false             -- disable swap file
+-- ── Undo / Backup / Swap ──────────────────────────────────────────────────────
+vim.opt.undofile = true
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.swapfile = false
 
--- completion / popup
-vim.o.completeopt = 'menuone,noselect' -- better completion UX
-vim.o.pumheight = 10                   -- popup menu height
-vim.opt.shortmess:append 'c'           -- suppress completion messages
+-- ── Completion ────────────────────────────────────────────────────────────────
+vim.opt.completeopt = "menuone,noselect"
+vim.opt.pumheight = 10
+vim.opt.shortmess:append("c") -- suppress completion messages
 
--- timing / responsiveness
-vim.o.updatetime = 250             -- faster CursorHold
-vim.o.timeoutlen = 300             -- key sequence timeout
+-- ── Timing ────────────────────────────────────────────────────────────────────
+vim.opt.updatetime = 250 -- faster CursorHold / gitsigns
+vim.opt.timeoutlen = 300 -- which-key trigger delay
 
--- movement behavior
-vim.o.whichwrap = 'bs<>[]hl'       -- allow wrap movement
-vim.o.backspace = 'indent,eol,start' -- sane backspace
+-- ── Movement ──────────────────────────────────────────────────────────────────
+vim.opt.whichwrap = "bs<>[]hl"
+vim.opt.backspace = "indent,eol,start"
 
--- file handling
-vim.o.fileencoding = 'utf-8'       -- file encoding
+-- ── Files ─────────────────────────────────────────────────────────────────────
+vim.opt.fileencoding = "utf-8"
+vim.opt.fixeol = true -- ensure single newline at end of file
 
--- text formatting
-vim.opt.formatoptions:remove { 'c', 'r', 'o' } -- no auto comment insertion
+-- ── Formatting / Keywords ─────────────────────────────────────────────────────
+vim.opt.formatoptions:remove({ "c", "r", "o" }) -- no auto comment continuation
+vim.opt.iskeyword:append("-") -- hyphenated-words as one token
 
--- keyword rules
-vim.opt.iskeyword:append '-'       -- treat hyphenated words as one
-
--- runtime path cleanup
-vim.opt.runtimepath:remove '/usr/share/vim/vimfiles' -- avoid vim plugin bleed
-
+-- ── Runtime path ──────────────────────────────────────────────────────────────
+vim.opt.runtimepath:remove("/usr/share/vim/vimfiles")

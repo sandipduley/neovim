@@ -1,116 +1,94 @@
 return {
-  {
-    "rachartier/tiny-inline-diagnostic.nvim",
-    event = "LspAttach",
-    config = function()
-      -- Disable default virtual text (so tiny-inline handles diagnostics)
-      vim.diagnostic.config({
-        virtual_text = false,
-      })
+	{
+		"rachartier/tiny-inline-diagnostic.nvim",
+		event = "LspAttach",
+		config = function()
+			vim.diagnostic.config({ virtual_text = false })
 
-      require("tiny-inline-diagnostic").setup({
-        -- Choose UI style
-        preset = "ghost",
+			require("tiny-inline-diagnostic").setup({
+				preset = "ghost",
 
-        -- Transparency options
-        transparent_bg = false,
-        transparent_cursorline = true,
+				transparent_bg = false,
+				transparent_cursorline = true,
 
-        -- Highlight groups used by the plugin
-        highlight = {
-          error = "DiagnosticError",
-          warn = "DiagnosticWarn",
-          info = "DiagnosticInfo",
-          hint = "DiagnosticHint",
-          arrow = "NonText",
-          background = "CursorLine",
-          mixing_color = "Normal",
-        },
+				highlight = {
+					error = "DiagnosticError",
+					warn = "DiagnosticWarn",
+					info = "DiagnosticInfo",
+					hint = "DiagnosticHint",
+					arrow = "NonText",
+					background = "CursorLine",
+					mixing_color = "Normal",
+				},
 
-        -- Disable plugin for specific filetypes
-        disabled_ft = {},
+				disabled_ft = {},
 
-        options = {
-          -- Show diagnostic source (e.g., "lua_ls")
-          show_source = {
-            enabled = true,
-            if_many = false,
-          },
+				options = {
+					-- ── Source & icons ──────────────────────────────────────────────
+					show_source = {
+						enabled = true,
+						if_many = false,
+					},
+					use_icons_from_diagnostic = false,
+					set_arrow_to_diag_color = false,
 
-          -- Icon behavior
-          use_icons_from_diagnostic = false,
-          set_arrow_to_diag_color = false,
+					-- ── Display ─────────────────────────────────────────────────────
+					throttle = 20,
+					softwrap = 30,
 
-          -- Performance + wrapping
-          throttle = 20,
-          softwrap = 30,
+					add_messages = {
+						messages = true,
+						display_count = false,
+						use_max_severity = false,
+						show_multiple_glyphs = true,
+					},
 
-          -- Message display settings
-          add_messages = {
-            messages = true,
-            display_count = false,
-            use_max_severity = false,
-            show_multiple_glyphs = true,
-          },
+					overflow = {
+						mode = "wrap",
+						padding = 0,
+					},
 
-          -- Multiline diagnostic settings
-          multilines = {
-            enabled = true,
-            always_show = true,
-            trim_whitespaces = false,
-            tabstop = 4,
-            severity = nil,
-          },
+					break_line = {
+						enabled = false,
+						after = 30,
+					},
 
-          -- Cursor behavior
-          show_all_diags_on_cursorline = false,
-          show_diags_only_under_cursor = false,
+					-- ── Multiline ───────────────────────────────────────────────────
+					multilines = {
+						enabled = true,
+						always_show = true,
+						trim_whitespaces = false,
+						tabstop = 4,
+						severity = nil,
+					},
 
-          -- LSP relatedInformation support
-          show_related = {
-            enabled = true,
-            max_count = 6,
-          },
+					-- ── Related info ────────────────────────────────────────────────
+					show_related = {
+						enabled = true,
+						max_count = 6,
+					},
 
-          -- Show diagnostics during insert/select mode
-          enable_on_insert = true,
-          enable_on_select = true,
+					-- ── Cursor / mode ───────────────────────────────────────────────
+					show_all_diags_on_cursorline = false,
+					show_diags_only_under_cursor = false,
+					enable_on_insert = true,
+					enable_on_select = true,
 
-          -- Handle long lines
-          overflow = {
-            mode = "wrap",
-            padding = 0,
-          },
+					-- ── Severity filter ─────────────────────────────────────────────
+					severity = {
+						vim.diagnostic.severity.ERROR,
+						vim.diagnostic.severity.WARN,
+						vim.diagnostic.severity.INFO,
+						vim.diagnostic.severity.HINT,
+					},
 
-          break_line = {
-            enabled = false,
-            after = 30,
-          },
-
-          -- Custom formatting function (optional)
-          format = nil,
-
-          -- Priority for virtual text layers
-          virt_texts = {
-            priority = 2048,
-          },
-
-          -- Severity filter (show all)
-          severity = {
-            vim.diagnostic.severity.ERROR,
-            vim.diagnostic.severity.WARN,
-            vim.diagnostic.severity.INFO,
-            vim.diagnostic.severity.HINT,
-          },
-
-          -- Auto-detection events
-          overwrite_events = nil,
-
-          -- Disable diagnostics when opening floats
-          override_open_float = false,
-        },
-      })
-    end,
-  },
+					-- ── Misc ────────────────────────────────────────────────────────
+					virt_texts = { priority = 2048 },
+					format = nil,
+					overwrite_events = nil,
+					override_open_float = false,
+				},
+			})
+		end,
+	},
 }
-

@@ -1,54 +1,51 @@
 return {
-    "mbbill/undotree",
-    keys = {
-        {
-            "<leader>u",
-            function()
-                vim.cmd.UndotreeToggle()
+	"mbbill/undotree",
+	keys = {
+		{ "<leader>u", desc = "Undotree: toggle" },
+	},
+	config = function()
+		-- ── Helpers ───────────────────────────────────────────────────────────────
+		local function find_undotree_win()
+			for _, win in ipairs(vim.api.nvim_list_wins()) do
+				local buf = vim.api.nvim_win_get_buf(win)
+				local ok, ft = pcall(vim.api.nvim_get_option_value, "filetype", { buf = buf })
+				if ok and ft == "undotree" then
+					return win
+				end
+			end
+		end
 
-                local function focus_and_resize_undotree()
-                    for _, win in ipairs(vim.api.nvim_list_wins()) do
-                        local buf = vim.api.nvim_win_get_buf(win)
-                        if vim.api.nvim_buf_get_option(buf, "filetype") == "undotree" then
-                            vim.api.nvim_set_current_win(win)
+		local function resize_undotree(win)
+			if not win or not vim.api.nvim_win_is_valid(win) then
+				return
+			end
+			vim.api.nvim_win_set_width(win, math.floor(vim.o.columns * 0.3))
+			vim.api.nvim_win_set_height(win, math.floor(vim.o.lines * 0.6))
+		end
 
-                            -- Responsive sizing: 30% width, 60% height of current Neovim window
-                            local width = math.floor(vim.o.columns * 0.3)
-                            local height = math.floor(vim.o.lines * 0.6)
-                            vim.api.nvim_win_set_width(win, width)
-                            vim.api.nvim_win_set_height(win, height)
+		-- ── Resize on VimResized (created once) ───────────────────────────────────
+		vim.api.nvim_create_augroup("UndotreeResize", { clear = true })
+		vim.api.nvim_create_autocmd("VimResized", {
+			group = "UndotreeResize",
+			callback = function()
+				resize_undotree(find_undotree_win())
+			end,
+		})
 
-                            -- Disable line numbers for clean diff panel
-                            vim.wo[win].number = false
-                            vim.wo[win].relativenumber = false
-
-                            -- Highlight current undo node
-                            vim.cmd("hi! link UndoTreeCurrentLine CursorLine")
-                            break
-                        end
-                    end
-                end
-
-                -- Focus and resize initially
-                vim.defer_fn(focus_and_resize_undotree, 50)
-
-                -- Create autocommand to resize UndoTree on VimResized
-                vim.api.nvim_create_autocmd("VimResized", {
-                    callback = function()
-                        for _, win in ipairs(vim.api.nvim_list_wins()) do
-                            local buf = vim.api.nvim_win_get_buf(win)
-                            if vim.api.nvim_buf_get_option(buf, "filetype") == "undotree" then
-                                local width = math.floor(vim.o.columns * 0.5)
-                                local height = math.floor(vim.o.lines * 0.6)
-                                vim.api.nvim_win_set_width(win, width)
-                                vim.api.nvim_win_set_height(win, height)
-                            end
-                        end
-                    end,
-                })
-            end,
-            desc = "Toggle UndoTree and focus",
-        },
-    },
+		-- ── Keymap ────────────────────────────────────────────────────────────────
+		vim.keymap.set("n", "<leader>u", function()
+			vim.cmd.UndotreeToggle()
+			vim.defer_fn(function()
+				local win = find_undotree_win()
+				if not win then
+					return
+				end
+				vim.api.nvim_set_current_win(win)
+				resize_undotree(win)
+				vim.wo[win].number = false
+				vim.wo[win].relativenumber = false
+				vim.cmd("hi! link UndoTreeCurrentLine CursorLine")
+			end, 50)
+		end, { desc = "Undotree: toggle" })
+	end,
 }
-

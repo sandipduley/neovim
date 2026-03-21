@@ -1,90 +1,90 @@
 return {
-  'nvim-treesitter/nvim-treesitter',
-  lazy = false,
-  build = ':TSUpdate',
-  dependencies = {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-  },
-  config = function()
-    require('nvim-treesitter.configs').setup {
-      ensure_installed = {
-        'bash',
-        'c',
-        'css',
-        'dockerfile',
-        'go',
-        'html',
-        'javascript',
-        'json',
-        'lua',
-        'markdown',
-        'markdown_inline',
-        'python',
-        'regex',
-        'toml',
-        'vim',
-        'vimdoc',
-        'yaml',
-        'gitignore',
-      },
+	"nvim-treesitter/nvim-treesitter",
+	lazy = false,
+	build = ":TSUpdate",
+	dependencies = {
+		"nvim-treesitter/nvim-treesitter-textobjects",
+	},
+	config = function()
+		require("nvim-treesitter.configs").setup({
+			ensure_installed = {
+				"bash",
+				"c",
+				"css",
+				"dockerfile",
+				"go",
+				"html",
+				"javascript",
+				"json",
+				"lua",
+				"markdown",
+				"markdown_inline",
+				"python",
+				"regex",
+				"toml",
+				"vim",
+				"vimdoc",
+				"yaml",
+				"gitignore",
+			},
 
-      auto_install = true,
+			auto_install = true,
+			highlight = { enable = true },
+			indent = { enable = false },
 
-      highlight = { enable = true },
+			-- ── Incremental selection ──────────────────────────────────────────────
+			incremental_selection = {
+				enable = true,
+				keymaps = {
+					init_selection = "gnn",
+					node_incremental = "grn",
+					scope_incremental = "grc",
+					node_decremental = "grm",
+				},
+			},
 
-      -- Disable indent to avoid bugs
-      indent = { enable = false },
+			-- ── Textobjects ───────────────────────────────────────────────────────
+			textobjects = {
+				select = {
+					enable = true,
+					lookahead = true,
+					keymaps = {
+						["aa"] = { query = "@parameter.outer", desc = "outer argument" },
+						["ia"] = { query = "@parameter.inner", desc = "inner argument" },
+						["af"] = { query = "@function.outer", desc = "outer function" },
+						["if"] = { query = "@function.inner", desc = "inner function" },
+						["ac"] = { query = "@class.outer", desc = "outer class" },
+						["ic"] = { query = "@class.inner", desc = "inner class" },
+					},
+				},
 
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = 'gnn',
-          node_incremental = 'grn',
-          scope_incremental = 'grc',
-          node_decremental = 'grm',
-        },
-      },
+				move = {
+					enable = true,
+					set_jumps = true,
+					goto_next_start = {
+						["]m"] = { query = "@function.outer", desc = "next function start" },
+						["]]"] = { query = "@class.outer", desc = "next class start" },
+					},
+					goto_next_end = {
+						["]M"] = { query = "@function.outer", desc = "next function end" },
+						["]["] = { query = "@class.outer", desc = "next class end" },
+					},
+					goto_previous_start = {
+						["[m"] = { query = "@function.outer", desc = "prev function start" },
+						["[["] = { query = "@class.outer", desc = "prev class start" },
+					},
+					goto_previous_end = {
+						["[M"] = { query = "@function.outer", desc = "prev function end" },
+						["[]"] = { query = "@class.outer", desc = "prev class end" },
+					},
+				},
 
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ['aa'] = '@parameter.outer',
-            ['ia'] = '@parameter.inner',
-            ['af'] = '@function.outer',
-            ['if'] = '@function.inner',
-            ['ac'] = '@class.outer',
-            ['ic'] = '@class.inner',
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true,
-          goto_next_start = {
-            [']m'] = '@function.outer',
-            [']]'] = '@class.outer',
-          },
-          goto_next_end = {
-            [']M'] = '@function.outer',
-            [']['] = '@class.outer',
-          },
-          goto_previous_start = {
-            ['[m'] = '@function.outer',
-            ['[['] = '@class.outer',
-          },
-          goto_previous_end = {
-            ['[M'] = '@function.outer',
-            ['[]'] = '@class.outer',
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = { ['<leader>a'] = '@parameter.inner' },
-          swap_previous = { ['<leader>A'] = '@parameter.inner' },
-        },
-      },
-    }
-  end,
+				swap = {
+					enable = true,
+					swap_next = { ["<leader>a"] = { query = "@parameter.inner", desc = "swap next param" } },
+					swap_previous = { ["<leader>A"] = { query = "@parameter.inner", desc = "swap prev param" } },
+				},
+			},
+		})
+	end,
 }
-

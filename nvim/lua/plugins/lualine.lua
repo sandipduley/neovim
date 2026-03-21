@@ -1,113 +1,148 @@
 return {
 	"nvim-lualine/lualine.nvim",
 	config = function()
-		-- Colors & Theme
+		-- ── Palette ───────────────────────────────────────────────────────────────
+		local c = {
+			bg = "#1e2030",
+			bg2 = "#2d3149",
+			bg3 = "#252840",
+			fg = "#cdd6f4",
+			subtext = "#a6adc8",
 
-		local colors = {
-			bg = "#2a2f45",
-			fg = "#f0f0f0",
-
-			red = "#ff859f",
-			orange = "#ffb987",
-			yellow = "#f6d98a",
-			green = "#17E68A",
-			blue = "#8ab4ff",
-			purple = "#dd9cf0",
-			cyan = "#7ee6ed",
-
-			gray1 = "#b0b6c9",
-			gray2 = "#343a55",
-			gray3 = "#424a6b",
+			red = "#ff6e8a",
+			orange = "#ff9966",
+			yellow = "#ffd080",
+			green = "#00e5a0",
+			blue = "#6eb5ff",
+			purple = "#d18eff",
+			cyan = "#00d4ff",
+			teal = "#00e0c0",
 		}
 
-		local custom_theme = {
-			normal = {
-				a = { fg = colors.bg, bg = colors.green, gui = "bold" },
-				b = { fg = colors.fg, bg = colors.gray3 },
-				c = { fg = colors.fg, bg = colors.gray2 },
-			},
-			insert = { a = { fg = colors.bg, bg = colors.blue, gui = "bold" } },
-			visual = { a = { fg = colors.bg, bg = colors.purple, gui = "bold" } },
-			replace = { a = { fg = colors.bg, bg = colors.red, gui = "bold" } },
-			terminal = { a = { fg = colors.bg, bg = colors.cyan, gui = "bold" } },
-			command = { a = { fg = colors.bg, bg = colors.orange, gui = "bold" } },
+		-- ── Theme — y/z explicitly set so no mode color bleeds in ─────────────────
+		local function make_mode(accent)
+			return {
+				a = { fg = c.bg, bg = accent, gui = "bold" },
+				b = { fg = c.fg, bg = c.bg2 },
+				c = { fg = c.fg, bg = c.bg3 },
+				y = { fg = c.cyan, bg = c.bg2, gui = "bold" },
+				z = { fg = accent, bg = c.bg2, gui = "bold" },
+			}
+		end
+
+		local theme = {
+			normal = make_mode(c.teal),
+			insert = make_mode(c.blue),
+			visual = make_mode(c.purple),
+			replace = make_mode(c.red),
+			terminal = make_mode(c.green),
+			command = make_mode(c.orange),
 			inactive = {
-				a = { fg = colors.gray1, bg = colors.bg, gui = "bold" },
-				b = { fg = colors.gray1, bg = colors.bg },
-				c = { fg = colors.gray1, bg = colors.gray2 },
+				a = { fg = c.subtext, bg = c.bg, gui = "bold" },
+				b = { fg = c.subtext, bg = c.bg },
+				c = { fg = c.subtext, bg = c.bg3 },
+				y = { fg = c.subtext, bg = c.bg2 },
+				z = { fg = c.subtext, bg = c.bg2 },
 			},
 		}
 
-		local theme_choice = os.getenv("NVIM_THEME") or "custom"
-
-		-- Helper Functions
-
-		local visible_if_wide = function()
+		-- ── Helpers ───────────────────────────────────────────────────────────────
+		local wide = function()
 			return vim.fn.winwidth(0) > 100
 		end
 
-		-- Components
-
-		local mode_component = {
+		-- ── Components ────────────────────────────────────────────────────────────
+		local mode = {
 			"mode",
 			fmt = function(str)
-				return visible_if_wide() and (" " .. str) or (" " .. str:sub(1, 1))
+				return wide() and ("  " .. str .. " ") or ("  " .. str:sub(1, 1) .. " ")
 			end,
 		}
 
-		local file_component = { "filename", file_status = true, path = 1 }
+		local file = {
+			"filename",
+			file_status = true,
+			path = 1,
+			symbols = { modified = "  ", readonly = "  ", unnamed = "  " },
+		}
 
-		local diagnostic_component = {
+		local branch = {
+			"branch",
+			icon = " ",
+			color = { fg = c.purple, gui = "bold" },
+		}
+
+		local diagnostics = {
 			"diagnostics",
 			sources = { "nvim_diagnostic" },
-			sections = { "error", "warn" },
-			symbols = { error = " ", warn = " ", info = " ", hint = " " },
+			sections = { "error", "warn", "info", "hint" },
+			symbols = { error = " ", warn = " ", info = " ", hint = " " },
+			diagnostics_color = {
+				error = { fg = c.red },
+				warn = { fg = c.yellow },
+				info = { fg = c.blue },
+				hint = { fg = c.teal },
+			},
 			colored = true,
 			update_in_insert = true,
-			cond = visible_if_wide,
+			cond = wide,
 		}
 
-		local diff_component = {
+		local diff = {
 			"diff",
 			colored = true,
-			symbols = { added = " ", modified = "柳 ", removed = " " },
-			cond = visible_if_wide,
+			symbols = { added = " +A ", modified = " ~M ", removed = " -D " },
+			diff_color = {
+				added = { fg = c.green },
+				modified = { fg = c.yellow },
+				removed = { fg = c.red },
+			},
+			cond = wide,
 		}
 
-		-- Lualine Setup
+		local filetype = {
+			"filetype",
+			colored = true,
+			icon_only = false,
+			cond = wide,
+		}
 
+		local encoding = {
+			"encoding",
+			fmt = string.upper,
+			cond = wide,
+			color = { fg = c.subtext },
+		}
+
+		-- ── Setup ─────────────────────────────────────────────────────────────────
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
-				theme = theme_choice == "custom" and custom_theme or theme_choice,
-				section_separators = { left = "", right = "" },
-				component_separators = { left = "", right = "" },
+				theme = theme,
+				section_separators = { left = "", right = "" },
+				component_separators = { left = "│", right = "│" },
 				disabled_filetypes = { "alpha", "neo-tree", "Avante" },
 				always_divide_middle = true,
+				globalstatus = true,
 			},
 			sections = {
-				lualine_a = { mode_component },
-				lualine_b = { "branch" },
-				lualine_c = { file_component },
-				lualine_x = {
-					diagnostic_component,
-					diff_component,
-					{ "encoding", cond = visible_if_wide },
-					{ "filetype", cond = visible_if_wide },
-				},
-				lualine_y = { "location" },
-				lualine_z = { "progress" },
+				lualine_a = { mode },
+				lualine_b = { branch, diff },
+				lualine_c = { file, diagnostics },
+				lualine_x = { encoding, filetype },
+				lualine_y = { "progress" },
+				lualine_z = { "location" },
 			},
 			inactive_sections = {
 				lualine_a = {},
 				lualine_b = {},
-				lualine_c = { file_component },
+				lualine_c = { file },
 				lualine_x = { { "location", padding = 0 } },
 				lualine_y = {},
 				lualine_z = {},
 			},
 			tabline = {},
-			extensions = { "fugitive" },
+			extensions = { "fugitive", "neo-tree", "lazy" },
 		})
 	end,
 }

@@ -104,7 +104,7 @@ rm -rf ~/.config/nvim\
 ```bash
 git clone --depth=1 https://github.com/sandipduley/Neovim-Setup-v2.git
 cd Neovim-Setup-v2
-cp -r nvim/ ~/.config/nvim/
+cp -r nvim/ ~/.config/
 ```
 
 ---

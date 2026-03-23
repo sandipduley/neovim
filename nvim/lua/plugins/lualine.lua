@@ -62,7 +62,7 @@ return {
 		local file = {
 			"filename",
 			file_status = true,
-			path = 1,
+			path = 3, -- 0: filename, 1: relative, 2: absolute, 3: absolute + shorten home
 			symbols = { modified = "  ", readonly = "  ", unnamed = "  " },
 		}
 

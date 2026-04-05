@@ -41,6 +41,8 @@ require("lazy").setup({
 		{ import = "plugins.undotree" },
 		{ import = "plugins.yazi" },
 		{ import = "plugins.render-markdown" },
+		{ import = "plugins.toogle-term" },
+
 		-- { import = "plugins.debug" },
 		-- { import = "plugins.neotree" },
 	},

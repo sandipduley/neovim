@@ -21,6 +21,7 @@ return {
 				"stylua",
 				"ruff",
 				"gofumpt",
+				"gopls"
 				"goimports",
 				"shfmt",
 				"sqlfluff",

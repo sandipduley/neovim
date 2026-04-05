@@ -128,6 +128,19 @@ return {
 			dockerls = {},
 			docker_compose_language_service = {},
 
+			gopls = {
+				settings = {
+					gopls = {
+						analyses = {
+							unusedparams = true,
+							shadow = true,
+						},
+						staticcheck = true,
+						gofumpt = true,
+					},
+				},
+			},
+
 			-- Tailwind CSS LSP
 			tailwindcss = {
 				filetypes = {

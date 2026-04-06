@@ -49,7 +49,7 @@ return {
 				map("gD", lsp.buf.declaration, "Goto Declaration")
 
 				-- Symbol highlighting
-				if client and client.supports_method(lsp.protocol.Methods.textDocument_documentHighlight) then
+				if client and client:supports_method(lsp.protocol.Methods.textDocument_documentHighlight) then
 					api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 						buffer = buf,
 						group = highlight_group,
@@ -63,7 +63,7 @@ return {
 				end
 
 				-- Format on save (only null-ls)
-				if client and client.supports_method("textDocument/formatting") then
+				if client and client:supports_method("textDocument/formatting") then
 					api.nvim_clear_autocmds({ group = format_group, buffer = buf })
 					api.nvim_create_autocmd("BufWritePre", {
 						group = format_group,

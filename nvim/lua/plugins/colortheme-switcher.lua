@@ -3,26 +3,24 @@ return {
 	{ "folke/tokyonight.nvim", lazy = true },
 	{ "tiagovla/tokyodark.nvim", lazy = true },
 	{ "catppuccin/nvim", name = "catppuccin", lazy = true },
-	{ "ellisonleao/gruvbox.nvim", lazy = true },
-	{ "navarasu/onedark.nvim", lazy = true },
-	{ "sainnhe/everforest", lazy = true },
 	{ "Mofiqul/dracula.nvim", lazy = true },
-	{ "bluz71/vim-nightfly-colors", lazy = true },
 	{ "samharju/synthweave.nvim", lazy = true },
-	{ "Tsuzat/NeoSolarized.nvim", lazy = true },
 	{ "maxmx03/fluoromachine.nvim", lazy = true },
 	{ "rebelot/kanagawa.nvim", lazy = true },
 	{ "rose-pine/neovim", name = "rose-pine", lazy = true },
 	{ "EdenEast/nightfox.nvim", lazy = true },
 	{ "sainnhe/sonokai", lazy = true },
-	{ "sainnhe/gruvbox-material", lazy = true },
-	{ "marko-cerovac/material.nvim", lazy = true },
 	{ "bluz71/vim-moonfly-colors", lazy = true },
 	{ "projekt0n/github-nvim-theme", lazy = true },
-	{ "olimorris/onedarkpro.nvim", lazy = true },
-	{ "shaunsingh/nord.nvim", lazy = true },
 	{ "nyoom-engineering/oxocarbon.nvim", lazy = true },
-	-- { "ficcdaf/anemo.nvim", lazy = true },
+	-- ── Neon / Cyberpunk ──────────────────────────────────────────────────────
+	{ "scottmckendry/cyberdream.nvim", lazy = true },
+	{ "olivercederborg/poimandres.nvim", lazy = true },
+	{ "ray-x/aurora", lazy = true },
+	{ "embark-theme/vim", name = "embark", lazy = true },
+	{ "dasupradyumna/midnight.nvim", lazy = true },
+	-- ── Neon Pink / Synthwave ─────────────────────────────────────────────────
+	{ "sainnhe/edge", lazy = true },
 
 	-- ── Themery ───────────────────────────────────────────────────────────────
 	{
@@ -34,10 +32,23 @@ return {
 				require("themery").loadTheme()
 			end)
 
+			vim.g.edge_style = "neon"
+
 			require("themery").setup({
 				livePreview = true,
 				themes = {
-					-- Dark
+					-- ── Neon Pink / Synthwave ──────────────────────────────────
+					{ name = "Fluoromachine", colorscheme = "fluoromachine" },
+					{ name = "Synthweave", colorscheme = "synthweave" },
+					{ name = "Edge Neon", colorscheme = "edge" },
+					-- ── Neon / Cyberpunk ───────────────────────────────────────
+					{ name = "Cyberdream", colorscheme = "cyberdream" },
+					{ name = "Poimandres", colorscheme = "poimandres" },
+					{ name = "Aurora", colorscheme = "aurora" },
+					{ name = "Embark", colorscheme = "embark" },
+					{ name = "Midnight", colorscheme = "midnight" },
+					{ name = "Oxocarbon", colorscheme = "oxocarbon" },
+					-- ── Dark ──────────────────────────────────────────────────
 					{ name = "Tokyo Night", colorscheme = "tokyonight" },
 					{ name = "Tokyo Night Storm", colorscheme = "tokyonight-storm" },
 					{ name = "Tokyo Night Moon", colorscheme = "tokyonight-moon" },
@@ -55,29 +66,11 @@ return {
 					{ name = "Nordfox", colorscheme = "nordfox" },
 					{ name = "Carbonfox", colorscheme = "carbonfox" },
 					{ name = "Terafox", colorscheme = "terafox" },
-					{ name = "Synthweave", colorscheme = "synthweave" },
-					{ name = "Fluoromachine", colorscheme = "fluoromachine" },
-					{ name = "Nightfly", colorscheme = "nightfly" },
-					{ name = "Moonfly", colorscheme = "moonfly" },
+					{ name = "Duskfox", colorscheme = "duskfox" },
 					{ name = "Sonokai", colorscheme = "sonokai" },
-					{ name = "Oxocarbon", colorscheme = "oxocarbon" },
-					-- { name = "Anemo", colorscheme = "anemo" },
-					-- Medium / neutral
-					{ name = "OneDark", colorscheme = "onedark" },
-					{ name = "Material Oceanic", colorscheme = "material-oceanic" },
-					{ name = "Material Deep Ocean", colorscheme = "material-deep-ocean" },
-					{ name = "Material Palenight", colorscheme = "material-palenight" },
-					{ name = "Nord", colorscheme = "nord" },
-					{ name = "NeoSolarized", colorscheme = "NeoSolarized" },
+					{ name = "Moonfly", colorscheme = "moonfly" },
 					{ name = "GitHub Dark", colorscheme = "github_dark" },
 					{ name = "GitHub Dark Dimmed", colorscheme = "github_dark_dimmed" },
-					-- Light / warm
-					{ name = "Gruvbox", colorscheme = "gruvbox" },
-					{ name = "Gruvbox Material", colorscheme = "gruvbox-material" },
-					{ name = "Everforest", colorscheme = "everforest" },
-					{ name = "Catppuccin Latte", colorscheme = "catppuccin-latte" },
-					{ name = "Rose Pine Dawn", colorscheme = "rose-pine-dawn" },
-					{ name = "GitHub Light", colorscheme = "github_light" },
 				},
 			})
 

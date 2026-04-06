@@ -102,8 +102,8 @@ rm -rf ~/.config/nvim\
 ## 🔌 Installation and Setup
 
 ```bash
-git clone --depth=1 https://github.com/sandipduley/Neovim-Setup-v2.git
-cd Neovim-Setup-v2
+git clone --depth=1 https://github.com/sandipduley/neovim.git
+cd neovim
 cp -r nvim/ ~/.config/
 ```
 
@@ -119,7 +119,7 @@ docker run -it --name custom-name sandipduley/neovim-udev /bin/bash
 
 ## 📁 Neovim Folder Structure
 
-        nvim
+        nvim/
         ├── init.lua
         ├── lazy-lock.json
         ├── lazyvim.json
@@ -147,12 +147,12 @@ docker run -it --name custom-name sandipduley/neovim-udev /bin/bash
                 ├── render-markdown.lua
                 ├── telescope.lua
                 ├── tiny-inline-diagnostic.lua
+                ├── toogle-term.lua
                 ├── treesitter.lua
                 ├── undotree.lua
                 └── yazi.lua
 
-
-#### 4 directories, 27 files
+#### 4 directories, 28 files
 
 ---
 

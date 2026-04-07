@@ -15,6 +15,27 @@ return {
 
 		require("luasnip.loaders.from_vscode").lazy_load()
 
+		-- Choose which key confirms the current completion item:
+		-- "enter" uses <CR>, while "shift+enter" uses <S-CR>.
+		local confirm_key = "enter"
+
+		-- Build the confirm-related mappings from the chosen key so you only need
+		-- to change the value above when you want different completion behaviour.
+		local function confirm_mappings(mode)
+			if mode == "shift+enter" then
+				return {
+					["<CR>"] = cmp.mapping(function(fallback)
+						fallback()
+					end, { "i", "s" }),
+					["<S-CR>"] = cmp.mapping.confirm({ select = true }),
+				}
+			end
+
+			return {
+				["<CR>"] = cmp.mapping.confirm({ select = true }),
+			}
+		end
+
 		-- ── Persistent autocomplete toggle ────────────────────────────────────────
 		local state_file = vim.fn.stdpath("data") .. "/cmp_state.txt"
 		local ac_on = vim.fn.filereadable(state_file) == 1 and vim.fn.readfile(state_file)[1] == "true" or true
@@ -96,17 +117,11 @@ return {
 				end,
 			},
 
-			mapping = cmp.mapping.preset.insert({
+			mapping = cmp.mapping.preset.insert(vim.tbl_extend("force", {
 				["<C-b>"] = cmp.mapping.scroll_docs(-4),
 				["<C-f>"] = cmp.mapping.scroll_docs(4),
 				["<C-Space>"] = cmp.mapping.complete(),
 				["<C-e>"] = cmp.mapping.abort(),
-
-				-- Confirm only with <S-CR>; plain <CR> keeps default behaviour
-				["<S-CR>"] = cmp.mapping.confirm({ select = true }),
-				["<CR>"] = cmp.mapping(function(fallback)
-					fallback()
-				end, { "i", "s" }),
 
 				-- Tab: next item or expand/jump snippet
 				["<Tab>"] = cmp.mapping(function(fallback)
@@ -129,7 +144,7 @@ return {
 						fallback()
 					end
 				end, { "i", "s" }),
-			}),
+			}, confirm_mappings(confirm_key))),
 
 			sources = cmp.config.sources(
 				{ { name = "nvim_lsp" }, { name = "luasnip" } },

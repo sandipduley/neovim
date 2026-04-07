@@ -93,7 +93,7 @@ vim.keymap.set("n", "<leader>lw", function()
 	local wrapped = vim.wo.wrap
 	vim.wo.wrap = not wrapped
 	vim.wo.sidescrolloff = wrapped and 8 or 0
-	vim.wo.sidescroll = wrapped and 1 or 0
+	vim.o.sidescroll = wrapped and 1 or 0
 	print(wrapped and "Wrap OFF" or "Wrap ON")
 end, opts)
 

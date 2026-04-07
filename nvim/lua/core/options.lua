@@ -11,10 +11,11 @@ vim.opt.cmdheight = 1
 vim.opt.conceallevel = 0 -- show markdown backticks
 
 -- ── Window / Scrolling ────────────────────────────────────────────────────────
-vim.opt.wrap = false
+vim.opt.wrap = true
 vim.opt.linebreak = true -- don't break mid-word
 vim.opt.scrolloff = 4
-vim.opt.sidescrolloff = 8
+vim.opt.sidescrolloff = 0
+vim.opt.sidescroll = 0
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 

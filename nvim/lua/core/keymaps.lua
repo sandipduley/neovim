@@ -72,7 +72,7 @@ vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", opts)
 -- ── Insert mode escape ────────────────────────────────────────────────────────
 vim.keymap.set("i", "jj", "<Esc>:w<CR>", opts)
 vim.keymap.set("i", "jk", "<Esc>:w<CR>", opts)
-vim.keymap.set("i", "kk", "<Esc>", opts)
+vim.keymap.set("i", "kk", "<Esc>:wq<CR>", opts)
 
 -- ── Visual mode ───────────────────────────────────────────────────────────────
 vim.keymap.set("v", "<", "<gv", opts)

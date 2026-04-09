@@ -135,6 +135,7 @@ docker run -it --name custom-name sandipduley/neovim-udev /bin/bash
                 ├── cmp.lua
                 ├── colortheme-switcher.lua
                 ├── comments.lua
+                ├── dankcolors.lua
                 ├── debug.lua
                 ├── extra-plugins.lua
                 ├── gitsigns.lua
@@ -152,7 +153,7 @@ docker run -it --name custom-name sandipduley/neovim-udev /bin/bash
                 ├── undotree.lua
                 └── yazi.lua
 
-#### 4 directories, 28 files
+#### 4 directories, 29 files
 
 ---
 

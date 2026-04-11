@@ -10,7 +10,7 @@ return {
 					return math.floor(vim.o.columns * 0.4)
 				end
 			end,
-			open_mapping = nil, -- we handle keymaps manually below
+			open_mapping = nil,
 			hide_numbers = true,
 			shade_terminals = true,
 			shading_factor = 2,
@@ -19,7 +19,7 @@ return {
 			terminal_mappings = true,
 			persist_size = true,
 			persist_mode = true,
-			direction = "float", -- "float" | "horizontal" | "vertical" | "tab"
+			direction = "float",
 			close_on_exit = true,
 			shell = vim.o.shell,
 			auto_scroll = true,
@@ -37,11 +37,32 @@ return {
 			},
 		})
 
-		-- <Space>t  →  toggle the floating terminal
+		-- Toggle mappings
 		vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<CR>", { desc = "Toggle floating terminal" })
-
-		-- <Esc> or <Space>t  →  close terminal while inside it (terminal mode)
 		vim.keymap.set("t", "<Esc>", "<cmd>ToggleTerm<CR>", { desc = "Close terminal" })
 		vim.keymap.set("t", "<leader>t", "<cmd>ToggleTerm<CR>", { desc = "Close terminal" })
+
+		-- Re-enter terminal mode automatically when the terminal window is entered.
+		-- This handles mouse clicks and scroll events that knock you into normal mode.
+		vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+			pattern = "term://*",
+			callback = function()
+				vim.cmd("startinsert")
+			end,
+		})
+
+		-- Inside the terminal buffer in normal mode, `i` drops you back into
+		-- terminal mode. Useful if the autocmd doesn't fire fast enough on a click.
+		vim.api.nvim_create_autocmd("TermOpen", {
+			pattern = "*",
+			callback = function()
+				vim.keymap.set("n", "i", function()
+					vim.cmd("startinsert")
+				end, { buffer = true, noremap = true })
+				vim.keymap.set("n", "<CR>", function()
+					vim.cmd("startinsert")
+				end, { buffer = true, noremap = true })
+			end,
+		})
 	end,
 }

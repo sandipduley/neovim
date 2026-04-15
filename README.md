@@ -6,6 +6,12 @@ formatting, linting**, and various quality-of-life enhancements.
 
 ---
 
+## Keybindings guide
+```bash
+https://neovim-keybindings-guide.vercel.app/
+```
+---
+
 ## 📌 Requirements
 
 You need **Neovim version above 0.10.x**.\

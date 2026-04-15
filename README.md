@@ -1,5 +1,4 @@
-# 🌟 Neovim Setup v2
-
+# 🌟 Neovim 
 A fast, modern, and highly customized Neovim configuration optimized for
 development.\
 This setup includes **LSP support, syntax highlighting, fuzzy finding,

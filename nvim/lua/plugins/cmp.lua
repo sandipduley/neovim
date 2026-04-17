@@ -178,7 +178,7 @@ return {
 		vim.cmd("doautocmd ColorScheme")
 
 		-- ── Toggle keymap ─────────────────────────────────────────────────────────
-		vim.keymap.set("n", "<leader>ta", function()
+		vim.keymap.set("n", "<leader>la", function()
 			ac_on = not ac_on
 			vim.fn.writefile({ tostring(ac_on) }, state_file)
 			cmp.setup({

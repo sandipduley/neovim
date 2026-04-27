@@ -90,76 +90,75 @@ return {
 
 		-- LSP servers
 		local servers = {
-			lua_ls = {
-				settings = {
-					Lua = {
-						runtime = { version = "LuaJIT" },
-						diagnostics = { globals = { "vim" } },
-						workspace = {
-							checkThirdParty = false,
-							library = api.nvim_get_runtime_file("", true),
-						},
-						format = { enable = false },
-					},
-				},
-			},
-			pyright = {
-				settings = {
-					python = {
-						pythonPath = vim.fn.exepath("python3"),
-						analysis = {
-							typeCheckingMode = "strict",
-							diagnosticMode = "openFilesOnly",
-							autoSearchPaths = true,
-							useLibraryCodeForTypes = true,
-						},
-					},
-				},
-			},
-			ts_ls = {
-				settings = {
-					javascript = { format = { enable = false } },
-					typescript = { format = { enable = false } },
-				},
-			},
-			html = { filetypes = { "html" } },
-			eslint = { settings = { workingDirectory = { mode = "auto" } } },
-			bashls = { settings = { bashIde = { globPattern = "**/*@(.sh|.bash|.zsh|.command)" } } },
-			dockerls = {},
-			docker_compose_language_service = {},
-
-			gopls = {
-				settings = {
-					gopls = {
-						analyses = {
-							unusedparams = true,
-							shadow = true,
-						},
-						staticcheck = true,
-						gofumpt = true,
-					},
-				},
-			},
-
-			-- Tailwind CSS LSP
-			tailwindcss = {
-				filetypes = {
-					"html",
-					"css",
-					"scss",
-					"javascript",
-					"javascriptreact",
-					"typescript",
-					"typescriptreact",
-					"vue",
-					"svelte",
-				},
-				init_options = {
-					userLanguages = {
-						eelixir = "html",
-					},
-				},
-			},
+			-- lua_ls = {
+			-- 	settings = {
+			-- 		Lua = {
+			-- 			runtime = { version = "LuaJIT" },
+			-- 			diagnostics = { globals = { "vim" } },
+			-- 			workspace = {
+			-- 				checkThirdParty = false,
+			-- 				library = api.nvim_get_runtime_file("", true),
+			-- 			},
+			-- 			format = { enable = false },
+			-- 		},
+			-- 	},
+			-- },
+			-- pyright = {
+			-- 	settings = {
+			-- 		python = {
+			-- 			pythonPath = vim.fn.exepath("python3"),
+			-- 			analysis = {
+			-- 				typeCheckingMode = "strict",
+			-- 				diagnosticMode = "openFilesOnly",
+			-- 				autoSearchPaths = true,
+			-- 				useLibraryCodeForTypes = true,
+			-- 			},
+			-- 		},
+			-- 	},
+			-- },
+			-- ts_ls = {
+			-- 	settings = {
+			-- 		javascript = { format = { enable = false } },
+			-- 		typescript = { format = { enable = false } },
+			-- 	},
+			-- },
+			-- html = { filetypes = { "html" } },
+			-- eslint = { settings = { workingDirectory = { mode = "auto" } } },
+			-- bashls = { settings = { bashIde = { globPattern = "**/*@(.sh|.bash|.zsh|.command)" } } },
+			-- dockerls = {},
+			-- docker_compose_language_service = {},
+			--
+			-- gopls = {
+			-- 	settings = {
+			-- 		gopls = {
+			-- 			analyses = {
+			-- 				unusedparams = true,
+			-- 				shadow = true,
+			-- 			},
+			-- 			staticcheck = true,
+			-- 			gofumpt = true,
+			-- 		},
+			-- 	},
+			-- },
+			--
+			-- tailwindcss = {
+			-- 	filetypes = {
+			-- 		"html",
+			-- 		"css",
+			-- 		"scss",
+			-- 		"javascript",
+			-- 		"javascriptreact",
+			-- 		"typescript",
+			-- 		"typescriptreact",
+			-- 		"vue",
+			-- 		"svelte",
+			-- 	},
+			-- 	init_options = {
+			-- 		userLanguages = {
+			-- 			eelixir = "html",
+			-- 		},
+			-- 	},
+			-- },
 		}
 
 		-- Ensure LSP servers are installed

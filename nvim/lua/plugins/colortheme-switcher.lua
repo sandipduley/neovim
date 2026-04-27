@@ -1,6 +1,16 @@
 return {
 	-- ── Themes ────────────────────────────────────────────────────────────────
-	{ "folke/tokyonight.nvim", lazy = true },
+	{
+		"folke/tokyonight.nvim",
+		opts = {
+			transparent = true,
+			styles = {
+				sidebars = "transparent",
+				floats = "transparent",
+			},
+		},
+		lazy = true,
+	},
 	{ "tiagovla/tokyodark.nvim", lazy = true },
 	{ "catppuccin/nvim", name = "catppuccin", lazy = true },
 	{ "Mofiqul/dracula.nvim", lazy = true },
@@ -21,8 +31,18 @@ return {
 	{ "dasupradyumna/midnight.nvim", lazy = true },
 	-- ── Neon Pink / Synthwave ─────────────────────────────────────────────────
 	{ "sainnhe/edge", lazy = true },
-
-	-- ── Themery ───────────────────────────────────────────────────────────────
+	{
+		"Tsuzat/NeoSolarized.nvim",
+		lazy = true,
+		config = function()
+			require("NeoSolarized").setup({
+				style = "dark",
+				transparent = true,
+				terminal_colors = true,
+				enable_italics = true,
+			})
+		end,
+	},
 	{
 		"zaldih/themery.nvim",
 		priority = 1000,
@@ -71,6 +91,7 @@ return {
 					{ name = "Moonfly", colorscheme = "moonfly" },
 					{ name = "GitHub Dark", colorscheme = "github_dark" },
 					{ name = "GitHub Dark Dimmed", colorscheme = "github_dark_dimmed" },
+					{ name = "NeoSolarized", colorscheme = "NeoSolarized" },
 				},
 			})
 

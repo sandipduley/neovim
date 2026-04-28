@@ -103,6 +103,7 @@ return {
 			-- 		},
 			-- 	},
 			-- },
+			--
 			-- pyright = {
 			-- 	settings = {
 			-- 		python = {
@@ -116,15 +117,20 @@ return {
 			-- 		},
 			-- 	},
 			-- },
+			--
 			-- ts_ls = {
 			-- 	settings = {
 			-- 		javascript = { format = { enable = false } },
 			-- 		typescript = { format = { enable = false } },
 			-- 	},
 			-- },
+			--
 			-- html = { filetypes = { "html" } },
+			--
 			-- eslint = { settings = { workingDirectory = { mode = "auto" } } },
+			--
 			-- bashls = { settings = { bashIde = { globPattern = "**/*@(.sh|.bash|.zsh|.command)" } } },
+			--
 			-- dockerls = {},
 			-- docker_compose_language_service = {},
 			--

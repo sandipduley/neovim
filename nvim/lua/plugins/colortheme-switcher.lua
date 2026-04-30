@@ -1,3 +1,4 @@
+return {
 	-- ── Themes ────────────────────────────────────────────────────────────────
 	{
 		"folke/tokyonight.nvim",
@@ -40,11 +41,13 @@
 		priority = 1000,
 		lazy = false,
 		config = function()
+			-- ✅ Set style globals BEFORE loadTheme() so they are
+			-- already in place when the saved colorscheme is restored.
+			vim.g.edge_style = "neon"
+
 			pcall(function()
 				require("themery").loadTheme()
 			end)
-
-			vim.g.edge_style = "neon"
 
 			require("themery").setup({
 				livePreview = true,

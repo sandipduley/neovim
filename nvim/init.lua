@@ -41,10 +41,12 @@ require("lazy").setup({
 		{ import = "plugins.undotree" },
 		{ import = "plugins.yazi" },
 		{ import = "plugins.render-markdown" },
+		{ import = "plugins.treesitter" },
 		{ import = "plugins.toogle-term" },
+
 		-- { import = "plugins.debug" },
+		-- { import = "plugins.neotree" },
 	},
-	{ import = "plugins.treesitter" },
 
 	change_detection = { notify = false },
 	ui = {

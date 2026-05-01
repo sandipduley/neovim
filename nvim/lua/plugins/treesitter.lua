@@ -1,9 +1,11 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	branch = "master",
 	lazy = false,
 	build = ":TSUpdate",
 	dependencies = {
-		"nvim-treesitter/nvim-treesitter-textobjects",
+		{ "nvim-treesitter/nvim-treesitter-textobjects", branch = "master" },
+		"nvim-treesitter/nvim-treesitter-context",
 	},
 	config = function()
 		require("nvim-treesitter.configs").setup({
@@ -29,6 +31,9 @@ return {
 			},
 
 			auto_install = true,
+			sync_install = false,
+			ignore_install = {},
+			modules = {},
 			highlight = { enable = true },
 			indent = { enable = false },
 
@@ -86,5 +91,21 @@ return {
 				},
 			},
 		})
+
+		local ok, treesitter_context = pcall(require, "treesitter-context")
+		if ok then
+			treesitter_context.setup({
+				enable = true,
+				max_lines = 3,
+				min_window_height = 12,
+				line_numbers = true,
+				multiline_threshold = 1,
+				trim_scope = "outer",
+				mode = "cursor",
+				separator = nil,
+			})
+		end
+
+		require("core.function_context").setup()
 	end,
 }

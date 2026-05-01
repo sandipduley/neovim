@@ -62,7 +62,7 @@ return {
 		local file = {
 			"filename",
 			file_status = true,
-			path = 3, -- 0: filename, 1: relative, 2: absolute, 3: absolute + shorten home
+			path = 0, -- 0: filename, 1: relative, 2: absolute, 3: absolute + shorten home
 			symbols = { modified = "  ", readonly = "  ", unnamed = "  " },
 		}
 
@@ -114,6 +114,28 @@ return {
 			color = { fg = c.subtext },
 		}
 
+		local search_count = {
+			function()
+				if vim.v.hlsearch == 0 or vim.fn.getreg("/") == "" then
+					return ""
+				end
+
+				local ok, count = pcall(vim.fn.searchcount, {
+					recompute = 1,
+					maxcount = 9999,
+					timeout = 50,
+				})
+
+				if not ok or count.total == 0 then
+					return ""
+				end
+
+				local remaining = math.max(count.total - count.current, 0)
+				return string.format("Search %d/%d (%d left)", count.current, count.total, remaining)
+			end,
+			color = { fg = c.yellow, gui = "bold" },
+		}
+
 		-- ── Setup ─────────────────────────────────────────────────────────────────
 		require("lualine").setup({
 			options = {
@@ -129,7 +151,7 @@ return {
 				lualine_a = { mode },
 				lualine_b = { branch, diff },
 				lualine_c = { file, diagnostics },
-				lualine_x = { encoding, filetype },
+				lualine_x = { search_count, encoding, filetype },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
 			},

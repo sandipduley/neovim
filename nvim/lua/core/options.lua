@@ -34,6 +34,7 @@ vim.opt.breakindent = true -- indent wrapped lines
 
 -- ── Search ────────────────────────────────────────────────────────────────────
 vim.opt.hlsearch = true
+vim.opt.incsearch = true
 vim.opt.smartcase = true
 -- vim.opt.ignorecase = true   -- uncomment to enable case-insensitive base
 
@@ -47,6 +48,7 @@ vim.opt.swapfile = false
 vim.opt.completeopt = "menuone,noselect"
 vim.opt.pumheight = 10
 vim.opt.shortmess:append("c") -- suppress completion messages
+vim.opt.shortmess:remove("S") -- show search count while typing, e.g. [2/8]
 
 -- ── Timing ────────────────────────────────────────────────────────────────────
 vim.opt.updatetime = 250 -- faster CursorHold / gitsigns
@@ -66,3 +68,20 @@ vim.opt.iskeyword:append("-") -- hyphenated-words as one token
 
 -- ── Runtime path ──────────────────────────────────────────────────────────────
 vim.opt.runtimepath:remove("/usr/share/vim/vimfiles")
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "go", "python", "html", "css", "javascript" },
+	callback = function()
+		local ft_commentstrings = {
+			go = "// %s",
+			python = "# %s",
+			html = "<!-- %s -->",
+			css = "/* %s */",
+			javascript = "// %s",
+		}
+		local cs = ft_commentstrings[vim.bo.filetype]
+		if cs then
+			vim.bo.commentstring = cs
+		end
+	end,
+})

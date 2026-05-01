@@ -90,19 +90,19 @@ return {
 
 		-- LSP servers
 		local servers = {
-			-- lua_ls = {
-			-- 	settings = {
-			-- 		Lua = {
-			-- 			runtime = { version = "LuaJIT" },
-			-- 			diagnostics = { globals = { "vim" } },
-			-- 			workspace = {
-			-- 				checkThirdParty = false,
-			-- 				library = api.nvim_get_runtime_file("", true),
-			-- 			},
-			-- 			format = { enable = false },
-			-- 		},
-			-- 	},
-			-- },
+			lua_ls = {
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						diagnostics = { globals = { "vim" } },
+						workspace = {
+							checkThirdParty = false,
+							library = api.nvim_get_runtime_file("", true),
+						},
+						format = { enable = false },
+					},
+				},
+			},
 			--
 			-- pyright = {
 			-- 	settings = {

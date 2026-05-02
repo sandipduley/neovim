@@ -131,6 +131,7 @@ docker run -it --name custom-name sandipduley/neovim-udev /bin/bash
         └── lua
             ├── core
             │   ├── keymaps.lua
+            │   ├── function_context.lua
             │   ├── options.lua
             │   └── snippets.lua
             └── plugins

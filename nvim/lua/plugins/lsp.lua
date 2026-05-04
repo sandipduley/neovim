@@ -265,57 +265,57 @@ return {
 				},
 			},
 
-			gopls = {
-				settings = {
-					gopls = {
-						-- ── Formatting ──────────────────────────────────────────
-						gofumpt = true,
-
-						-- ── Analyses ────────────────────────────────────────────
-						-- NOTE: "fieldalignment" was REMOVED in gopls v0.17.0.
-						-- Struct field size/offset info now appears on hover.
-						analyses = {
-							unusedparams = true,
-							unusedvariable = true, -- also useful, off by default
-							shadow = true,
-							nilness = true,
-							useany = true,
-						},
-
-						-- ── Staticcheck (experimental but stable in practice) ───
-						staticcheck = true,
-
-						-- ── Completion ──────────────────────────────────────────
-						usePlaceholders = true, -- fills parameter names as snippets
-						completeFunctionCalls = true, -- already default, explicit is clearer
-
-						-- ── Vulnerability scanning ──────────────────────────────
-						vulncheck = "Imports", -- warn about vulnerable dependencies
-
-						-- ── Code Lenses ─────────────────────────────────────────
-						-- "run_govulncheck" is superseded by "vulncheck" codelens
-						codelenses = {
-							generate = true,
-							regenerate_cgo = true,
-							tidy = true,
-							upgrade_dependency = true,
-							vendor = true,
-							vulncheck = true, -- replaces run_govulncheck
-						},
-
-						-- ── Inlay Hints ─────────────────────────────────────────
-						hints = {
-							assignVariableTypes = true,
-							compositeLiteralFields = true,
-							compositeLiteralTypes = true,
-							constantValues = true,
-							functionTypeParameters = true,
-							parameterNames = true,
-							rangeVariableTypes = true,
-						},
-					},
-				},
-			},
+			-- gopls = {
+			-- 	settings = {
+			-- 		gopls = {
+			-- 			-- ── Formatting ──────────────────────────────────────────
+			-- 			gofumpt = true,
+			--
+			-- 			-- ── Analyses ────────────────────────────────────────────
+			-- 			-- NOTE: "fieldalignment" was REMOVED in gopls v0.17.0.
+			-- 			-- Struct field size/offset info now appears on hover.
+			-- 			analyses = {
+			-- 				unusedparams = true,
+			-- 				unusedvariable = true, -- also useful, off by default
+			-- 				shadow = true,
+			-- 				nilness = true,
+			-- 				useany = true,
+			-- 			},
+			--
+			-- 			-- ── Staticcheck (experimental but stable in practice) ───
+			-- 			staticcheck = true,
+			--
+			-- 			-- ── Completion ──────────────────────────────────────────
+			-- 			usePlaceholders = true, -- fills parameter names as snippets
+			-- 			completeFunctionCalls = true, -- already default, explicit is clearer
+			--
+			-- 			-- ── Vulnerability scanning ──────────────────────────────
+			-- 			vulncheck = "Imports", -- warn about vulnerable dependencies
+			--
+			-- 			-- ── Code Lenses ─────────────────────────────────────────
+			-- 			-- "run_govulncheck" is superseded by "vulncheck" codelens
+			-- 			codelenses = {
+			-- 				generate = true,
+			-- 				regenerate_cgo = true,
+			-- 				tidy = true,
+			-- 				upgrade_dependency = true,
+			-- 				vendor = true,
+			-- 				vulncheck = true, -- replaces run_govulncheck
+			-- 			},
+			--
+			-- 			-- ── Inlay Hints ─────────────────────────────────────────
+			-- 			hints = {
+			-- 				assignVariableTypes = true,
+			-- 				compositeLiteralFields = true,
+			-- 				compositeLiteralTypes = true,
+			-- 				constantValues = true,
+			-- 				functionTypeParameters = true,
+			-- 				parameterNames = true,
+			-- 				rangeVariableTypes = true,
+			-- 			},
+			-- 		},
+			-- 	},
+			-- },
 
 			html = { filetypes = { "html" } },
 			eslint = { settings = { workingDirectory = { mode = "auto" } } },

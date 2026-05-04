@@ -19,7 +19,7 @@ return {
 			ensure_installed = {
 				"prettier",
 				"stylua",
-				-- "ruff",
+				"ruff",
 				-- "gofumpt",
 				-- "gopls",
 				-- "goimports",

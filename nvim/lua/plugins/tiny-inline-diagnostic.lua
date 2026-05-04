@@ -1,17 +1,17 @@
 return {
 	{
 		"rachartier/tiny-inline-diagnostic.nvim",
-		event = "LspAttach",
-		config = function()
-			vim.diagnostic.config({ virtual_text = false })
+		event = "VeryLazy", -- recommended over LspAttach
+		priority = 1000, -- load early so it's ready before LSP attaches
 
+		config = function()
 			require("tiny-inline-diagnostic").setup({
 				preset = "ghost",
-
 				transparent_bg = false,
 				transparent_cursorline = true,
 
-				highlight = {
+				-- ── Highlights ─────────────────────────────────────────────
+				hi = {
 					error = "DiagnosticError",
 					warn = "DiagnosticWarn",
 					info = "DiagnosticInfo",
@@ -24,7 +24,7 @@ return {
 				disabled_ft = {},
 
 				options = {
-					-- ── Source & icons ──────────────────────────────────────────────
+					-- ── Source & icons ──────────────────────────────────────
 					show_source = {
 						enabled = true,
 						if_many = false,
@@ -32,7 +32,7 @@ return {
 					use_icons_from_diagnostic = false,
 					set_arrow_to_diag_color = false,
 
-					-- ── Display ─────────────────────────────────────────────────────
+					-- ── Display ─────────────────────────────────────────────
 					throttle = 20,
 					softwrap = 30,
 
@@ -53,7 +53,7 @@ return {
 						after = 30,
 					},
 
-					-- ── Multiline ───────────────────────────────────────────────────
+					-- ── Multiline ───────────────────────────────────────────
 					multilines = {
 						enabled = true,
 						always_show = true,
@@ -62,19 +62,19 @@ return {
 						severity = nil,
 					},
 
-					-- ── Related info ────────────────────────────────────────────────
+					-- ── Related info ────────────────────────────────────────
 					show_related = {
 						enabled = true,
 						max_count = 6,
 					},
 
-					-- ── Cursor / mode ───────────────────────────────────────────────
+					-- ── Cursor / mode ───────────────────────────────────────
 					show_all_diags_on_cursorline = false,
 					show_diags_only_under_cursor = false,
 					enable_on_insert = true,
 					enable_on_select = true,
 
-					-- ── Severity filter ─────────────────────────────────────────────
+					-- ── Severity filter ─────────────────────────────────────
 					severity = {
 						vim.diagnostic.severity.ERROR,
 						vim.diagnostic.severity.WARN,
@@ -82,13 +82,25 @@ return {
 						vim.diagnostic.severity.HINT,
 					},
 
-					-- ── Misc ────────────────────────────────────────────────────────
+					-- ── Misc ────────────────────────────────────────────────
 					virt_texts = { priority = 2048 },
 					format = nil,
 					overwrite_events = nil,
-					override_open_float = false,
+
+					-- ✅ auto-hide inline diags when <leader>dl float opens
+					override_open_float = true,
+				},
+
+				-- ── Experimental ────────────────────────────────────────────
+				experimental = {
+					-- Prevents diagnostics mirroring across split windows
+					-- sharing the same buffer
+					use_window_local_extmarks = false,
 				},
 			})
+
+			-- Must be called AFTER setup() to correctly override the handler
+			vim.diagnostic.config({ virtual_text = false })
 		end,
 	},
 }

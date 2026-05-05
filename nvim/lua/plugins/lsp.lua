@@ -250,41 +250,41 @@ return {
         },
       },
 
-      gopls = {
-        settings = {
-          gopls = {
-            gofumpt = true,
-            analyses = {
-              unusedparams = true,
-              unusedvariable = true,
-              shadow = true,
-              nilness = true,
-              useany = true,
-            },
-            staticcheck = true,
-            usePlaceholders = true,
-            completeFunctionCalls = true,
-            vulncheck = "Imports",
-            codelenses = {
-              generate = true,
-              regenerate_cgo = true,
-              tidy = true,
-              upgrade_dependency = true,
-              vendor = true,
-              vulncheck = true,
-            },
-            hints = {
-              assignVariableTypes = true,
-              compositeLiteralFields = true,
-              compositeLiteralTypes = true,
-              constantValues = true,
-              functionTypeParameters = true,
-              parameterNames = false,
-              rangeVariableTypes = true,
-            },
-          },
-        },
-      },
+      -- gopls = {
+      --   settings = {
+      --     gopls = {
+      --       gofumpt = true,
+      --       analyses = {
+      --         unusedparams = true,
+      --         unusedvariable = true,
+      --         shadow = true,
+      --         nilness = true,
+      --         useany = true,
+      --       },
+      --       staticcheck = true,
+      --       usePlaceholders = true,
+      --       completeFunctionCalls = true,
+      --       vulncheck = "Imports",
+      --       codelenses = {
+      --         generate = true,
+      --         regenerate_cgo = true,
+      --         tidy = true,
+      --         upgrade_dependency = true,
+      --         vendor = true,
+      --         vulncheck = true,
+      --       },
+      --       hints = {
+      --         assignVariableTypes = true,
+      --         compositeLiteralFields = true,
+      --         compositeLiteralTypes = true,
+      --         constantValues = true,
+      --         functionTypeParameters = true,
+      --         parameterNames = false,
+      --         rangeVariableTypes = true,
+      --       },
+      --     },
+      --   },
+      -- },
 
       html = { filetypes = { "html" } },
       eslint = { settings = { workingDirectory = { mode = "auto" } } },

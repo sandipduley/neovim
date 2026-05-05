@@ -1,6 +1,6 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.notify("Bootstrapping lazy.nvim …", vim.log.levels.INFO)
+  vim.notify("Take a coffee while setting up the configuration this will be done in a minute.", vim.log.levels.INFO)
   local repo = "https://github.com/folke/lazy.nvim.git"
   local result = vim.fn.system({
     "git",

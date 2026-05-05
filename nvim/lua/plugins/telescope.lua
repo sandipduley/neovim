@@ -1,209 +1,160 @@
 return {
-	"nvim-telescope/telescope.nvim",
-	branch = "master",
-	cmd = "Telescope", -- lazy-load on :Telescope command
-	event = "VeryLazy", -- also load on idle so keymaps register
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"nvim-tree/nvim-web-devicons",
-		{
-			"nvim-telescope/telescope-fzf-native.nvim",
-			build = "make",
-			cond = function()
-				return vim.fn.executable("make") == 1
-			end,
-		},
-		"nvim-telescope/telescope-ui-select.nvim",
-	},
+  "nvim-telescope/telescope.nvim",
+  branch = "master",
+  cmd = "Telescope",
+  keys = "<leader>",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-tree/nvim-web-devicons",
+    {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      build = "make",
+      cond = function()
+        return vim.fn.executable("make") == 1
+      end,
+    },
+    "nvim-telescope/telescope-ui-select.nvim",
+  },
 
-	config = function()
-		local telescope = require("telescope")
-		local builtin = require("telescope.builtin")
-		local actions = require("telescope.actions")
-		local themes = require("telescope.themes")
+  config = function()
+    local telescope = require("telescope")
+    local builtin = require("telescope.builtin")
+    local actions = require("telescope.actions")
+    local themes = require("telescope.themes")
 
-		-- ─── Setup ───────────────────────────────────────────────────
-		telescope.setup({
-			defaults = {
-				-- Use ripgrep with hidden files, respecting .gitignore
-				vimgrep_arguments = {
-					"rg",
-					"--color=never",
-					"--no-heading",
-					"--with-filename",
-					"--line-number",
-					"--column",
-					"--smart-case",
-					"--hidden",
-					"--glob=!.git/",
-				},
+    -- Helper function for keymaps
+    local function map_keys(maps)
+      for mode, bindings in pairs(maps) do
+        for key, action in pairs(bindings) do
+          vim.keymap.set(mode, key, action, { silent = true, noremap = true })
+        end
+      end
+    end
 
-				layout_strategy = "horizontal",
-				layout_config = {
-					horizontal = {
-						prompt_position = "top", -- top feels more natural
-						preview_width = 0.55,
-						width = { padding = 0 },
-						height = { padding = 0 },
-					},
-				},
+    telescope.setup({
+      defaults = {
+        sorting_strategy = "ascending",
+        prompt_prefix = "   ",
+        selection_caret = "❯ ",
+        winblend = 5,
 
-				sorting_strategy = "ascending", -- pairs with prompt_position=top
-				winblend = 0,
-				prompt_prefix = "   ",
-				selection_caret = " ",
-				multi_icon = " ",
+        layout_strategy = "horizontal",
+        layout_config = {
+          horizontal = {
+            prompt_position = "bottom",
+            preview_width = 0.6,
+            width = { padding = 0 },
+            height = { padding = 0 },
+          },
+        },
 
-				-- Global ignore patterns (applies to all pickers)
-				file_ignore_patterns = {
-					"node_modules/",
-					"%.git/",
-					"%.venv/",
-					"%.lock",
-					"dist/",
-					"build/",
-					"__pycache__/",
-				},
+        mappings = {
+          i = {
+            ["<C-j>"] = actions.move_selection_next,
+            ["<C-k>"] = actions.move_selection_previous,
+            ["<C-l>"] = actions.select_default,
+            ["<C-c>"] = actions.close,
+          },
+          n = { ["q"] = actions.close },
+        },
 
-				path_display = { filename_first = { reverse_directories = true } },
+        path_display = {
+          filename_first = { reverse_directories = true },
+        },
+      },
 
-				mappings = {
-					i = {
-						["<C-j>"] = actions.move_selection_next,
-						["<C-k>"] = actions.move_selection_previous,
-						["<C-l>"] = actions.select_default,
-						["<C-s>"] = actions.select_horizontal, -- open in split
-						["<C-v>"] = actions.select_vertical, -- open in vsplit
-						["<C-t>"] = actions.select_tab, -- open in new tab
-						["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-						["<C-c>"] = actions.close,
-						["<C-u>"] = false, -- allow clearing prompt with C-u
-						["<C-d>"] = actions.preview_scrolling_down,
-						["<C-f>"] = actions.preview_scrolling_up,
-					},
-					n = {
-						["q"] = actions.close,
-						["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-					},
-				},
-			},
+      pickers = {
+        find_files = {
+          hidden = true,
+          file_ignore_patterns = { "node_modules", ".git", ".venv" },
+        },
 
-			pickers = {
-				find_files = {
-					hidden = true,
-					follow = true, -- follow symlinks
-				},
+        buffers = {
+          initial_mode = "normal",
+          sort_lastused = true,
+          mappings = {
+            n = {
+              ["d"] = function(bufnr)
+                actions.delete_buffer(bufnr, { force = true })
+              end,
+              ["l"] = actions.select_default,
+            },
+          },
+        },
 
-				live_grep = {
-					additional_args = { "--hidden" },
-				},
+        marks = { initial_mode = "normal" },
+        oldfiles = { initial_mode = "normal" },
+      },
 
-				buffers = {
-					initial_mode = "normal",
-					sort_lastused = true,
-					sort_mru = true,
-					mappings = {
-						n = {
-							["d"] = actions.delete_buffer,
-							["l"] = actions.select_default,
-						},
-					},
-				},
+      extensions = {
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = "smart_case",
+        },
+        ["ui-select"] = themes.get_dropdown(),
+      },
+    })
 
-				marks = { initial_mode = "normal" },
-				oldfiles = { initial_mode = "normal" },
+    -- Load extensions safely
+    pcall(telescope.load_extension, "fzf")
+    pcall(telescope.load_extension, "ui-select")
 
-				-- Show LSP diagnostics across the whole workspace by default
-				diagnostics = { bufnr = 0 },
-			},
+    -- Keymaps
+    -- Keymaps
+    map_keys({
+      n = {
+        -- Buffers & Marks
+        ["<leader>sb"] = builtin.buffers, -- Search open buffers
+        ["<leader><tab>"] = builtin.buffers, -- Search open buffers (tab shortcut)
+        ["<leader>bb"] = builtin.buffers, -- Search open buffers (buffer prefix)
+        ["<leader>sm"] = builtin.marks, -- Search marks
+        ["<leader>so"] = builtin.oldfiles, -- Search recently opened files
 
-			extensions = {
-				["ui-select"] = themes.get_dropdown({ winblend = 10 }),
-				fzf = {
-					fuzzy = true,
-					override_generic_sorter = true,
-					override_file_sorter = true,
-					case_mode = "smart_case",
-				},
-			},
-		})
+        -- Git
+        ["<leader>gf"] = builtin.git_files, -- Search git-tracked files
+        ["<leader>gc"] = builtin.git_commits, -- Search git commit log
+        ["<leader>gcf"] = builtin.git_bcommits, -- Search commits for current buffer
+        ["<leader>gb"] = builtin.git_branches, -- Search and switch git branches
+        ["<leader>gS"] = builtin.git_status, -- Search files with git changes
 
-		-- ─── Load extensions ─────────────────────────────────────────
-		pcall(telescope.load_extension, "fzf")
-		pcall(telescope.load_extension, "ui-select")
+        -- Search
+        ["<leader>sf"] = builtin.find_files, -- Search all files (including hidden)
+        ["<leader>sh"] = builtin.help_tags, -- Search Neovim help tags
+        ["<leader>sg"] = builtin.grep_string, -- Grep for word under cursor
+        ["<leader>gl"] = builtin.live_grep, -- Live grep across project
+        ["<leader>sd"] = builtin.diagnostics, -- Search LSP diagnostics
+        ["<leader>sr"] = builtin.resume, -- Resume last Telescope picker
 
-		-- ─── Keymaps ─────────────────────────────────────────────────
-		local function map(key, fn, desc)
-			vim.keymap.set("n", key, fn, { silent = true, noremap = true, desc = desc })
-		end
+        -- LSP Symbols
+        ["<leader>sds"] = function()
+          builtin.lsp_document_symbols({ -- Search LSP symbols in current buffer
+            symbols = {
+              "Class",
+              "Function",
+              "Method",
+              "Constructor",
+              "Interface",
+              "Module",
+              "Property",
+            },
+          })
+        end,
 
-		-- ── Files ──────────────────────────────────────────────────
-		map("<leader>sf", builtin.find_files, "Find Files")
-		map("<leader>so", builtin.oldfiles, "Recent Files")
-		map("<leader>s.", builtin.oldfiles, "Recent Files (.)")
+        -- Live grep in open files only (not whole project)
+        ["<leader>s/"] = function()
+          builtin.live_grep({
+            grep_open_files = true,
+            prompt_title = "Live Grep in Open Files",
+          })
+        end,
 
-		-- ── Buffers ────────────────────────────────────────────────
-		map("<leader>sb", builtin.buffers, "Buffers")
-		map("<leader><tab>", builtin.buffers, "Buffers")
-		map("<leader>bb", builtin.buffers, "Buffers")
-
-		-- ── Search / Grep ──────────────────────────────────────────
-		map("<leader>sh", builtin.help_tags, "Help Tags")
-		map("<leader>sk", builtin.keymaps, "Keymaps")
-		map("<leader>sc", builtin.commands, "Commands")
-		map("<leader>sw", builtin.grep_string, "Grep Word Under Cursor") -- ✅ was <leader>gs (conflict)
-		map("<leader>gl", builtin.live_grep, "Live Grep")
-		map("<leader>sd", builtin.diagnostics, "Diagnostics")
-		map("<leader>sr", builtin.resume, "Resume Last Picker")
-		map("<leader>sm", builtin.marks, "Marks")
-		map("<leader>s;", builtin.command_history, "Command History")
-		map("<leader>s/", builtin.search_history, "Search History")
-
-		-- ── Git ────────────────────────────────────────────────────
-		map("<leader>gf", builtin.git_files, "Git Files")
-		map("<leader>gc", builtin.git_commits, "Git Commits")
-		map("<leader>gcf", builtin.git_bcommits, "Git Buffer Commits")
-		map("<leader>gb", builtin.git_branches, "Git Branches")
-		map("<leader>gs", builtin.git_status, "Git Status") -- ✅ no longer conflicts
-
-		-- ── LSP Symbols ────────────────────────────────────────────
-		map("<leader>sds", function()
-			builtin.lsp_document_symbols({
-				symbols = {
-					"Class",
-					"Function",
-					"Method",
-					"Constructor",
-					"Interface",
-					"Module",
-					"Property",
-				},
-			})
-		end, "Document Symbols")
-
-		map("<leader>sws", function()
-			builtin.lsp_dynamic_workspace_symbols({
-				symbols = { "Class", "Function", "Method", "Interface" },
-			})
-		end, "Workspace Symbols")
-
-		-- ── Contextual searches ────────────────────────────────────
-		-- Grep only in open buffers
-		map("<leader>s<leader>", function()
-			builtin.live_grep({
-				grep_open_files = true,
-				prompt_title = "Grep in Open Buffers",
-			})
-		end, "Grep Open Buffers")
-
-		-- Fuzzy search inside current buffer
-		map("<leader>/", function()
-			builtin.current_buffer_fuzzy_find(themes.get_dropdown({ previewer = false }))
-		end, "Fuzzy Search Buffer")
-
-		-- Neovim config files
-		map("<leader>sn", function()
-			builtin.find_files({ cwd = vim.fn.stdpath("config") })
-		end, "Neovim Config Files")
-	end,
+        -- Fuzzy search within the current buffer (dropdown, no preview)
+        ["<leader>/"] = function()
+          builtin.current_buffer_fuzzy_find(themes.get_dropdown({ previewer = false }))
+        end,
+      },
+    })
+  end,
 }

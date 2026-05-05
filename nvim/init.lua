@@ -28,7 +28,7 @@ require("lazy").setup({
 		{ import = "plugins.cmp" },
 		{ import = "plugins.colortheme-switcher" },
 		{ import = "plugins.comments" },
-		{ import = "plugins.extra-plugins" },
+		{ import = "plugins.misc" },
 		{ import = "plugins.gitsigns" },
 		{ import = "plugins.indent-blankline" },
 		{ import = "plugins.lazygit" },
@@ -43,8 +43,7 @@ require("lazy").setup({
 		{ import = "plugins.treesitter" },
 		{ import = "plugins.toogle-term" },
 
-		-- { import = "plugins.debug" },
-		-- { import = "plugins.neotree" },
+		{ import = "plugins.debug" },
 	},
 
 	change_detection = { notify = false },

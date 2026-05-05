@@ -1,70 +1,160 @@
 return {
-	"nvimtools/none-ls.nvim",
-	event = { "BufReadPre", "BufNewFile" },
+  "nvimtools/none-ls.nvim",
+  event = { "BufReadPre", "BufNewFile" },
+  dependencies = {
+    "nvimtools/none-ls-extras.nvim",
+    "jayp0521/mason-null-ls.nvim",
+    "nvim-lua/plenary.nvim",
+  },
+  config = function()
+    local null_ls = require("null-ls")
+    local mason_null_ls = require("mason-null-ls")
+    local formatting = null_ls.builtins.formatting
+    local diagnostics = null_ls.builtins.diagnostics
 
-	dependencies = {
-		"nvimtools/none-ls-extras.nvim",
-		"jayp0521/mason-null-ls.nvim",
-	},
+    -- ── Mason: auto-install every tool declared below ──────────────────────────
+    mason_null_ls.setup({
+      ensure_installed = {
+        "prettier", -- JS / TS / HTML / CSS / JSON / YAML / Markdown
+        "stylua", -- Lua
+        "ruff", -- Python (format + lint)
+        -- "gofumpt", -- Go – strict gofmt superset
+        -- "goimports", -- Go – organise imports
+        -- "shfmt", -- Shell
+        -- "sqlfluff", -- SQL
+        "hadolint", -- Dockerfile
+        "markdownlint", -- Markdown lint
+      },
+      automatic_installation = true,
+    })
 
-	config = function()
-		local null_ls = require("null-ls")
-		local mason_null_ls = require("mason-null-ls")
+    -- ── Format-on-save (opt-in per buffer with <leader>tf) ─────────────────────
+    local fmt_enabled = true -- global toggle
 
-		local formatting = null_ls.builtins.formatting
-		local diagnostics = null_ls.builtins.diagnostics
+    local fmt_augroup = vim.api.nvim_create_augroup("NoneLsFmt", { clear = true })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = fmt_augroup,
+      callback = function()
+        if not fmt_enabled then
+          return
+        end
+        -- Only format if at least one null-ls source supports this buffer
+        if #null_ls.get_source({ method = null_ls.methods.FORMATTING }) > 0 then
+          vim.lsp.buf.format({ async = false, timeout_ms = 3000 })
+        end
+      end,
+    })
 
-		-- Ensure formatters/linters are installed
-		mason_null_ls.setup({
-			ensure_installed = {
-				"prettier",
-				"stylua",
-				"ruff",
-				-- "gofumpt",
-				-- "gopls",
-				-- "goimports",
-				-- "shfmt",
-				-- "sqlfluff",
-			},
-			automatic_installation = true,
-		})
+    vim.keymap.set("n", "<leader>tf", function()
+      fmt_enabled = not fmt_enabled
+      vim.notify("Format-on-save " .. (fmt_enabled and "enabled" or "disabled"), vim.log.levels.INFO)
+    end, { desc = "None-ls: toggle format-on-save" })
 
-		-- null-ls setup
-		null_ls.setup({
-			sources = {
-				formatting.prettier.with({
-					filetypes = {
-						"html",
-						"css",
-						"scss",
-						"javascript",
-						"javascriptreact",
-						"typescript",
-						"typescriptreact",
-						"json",
-						"yaml",
-						"markdown",
-					},
-				}),
+    vim.keymap.set({ "n", "v" }, "<leader>lf", function()
+      vim.lsp.buf.format({ async = false, timeout_ms = 3000 })
+    end, { desc = "None-ls: format buffer / range" })
 
-				-- Lua
-				formatting.stylua,
+    -- ── Sources ────────────────────────────────────────────────────────────────
+    null_ls.setup({
+      -- Show null-ls as a named source in :LspInfo / status lines
+      default_timeout = 5000,
+      debug = false, -- flip to true to trace source activity
 
-				-- Python
-				require("none-ls.formatting.ruff_format"),
-				require("none-ls.diagnostics.ruff"),
+      -- ── Web ────────────────────────────────────────────────────────────────
+      sources = {
+        formatting.prettier.with({
+          filetypes = {
+            "html",
+            "css",
+            "scss",
+            "less",
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact",
+            "vue",
+            "svelte",
+            "astro",
+            "json",
+            "jsonc",
+            "yaml",
+            "toml",
+            "markdown",
+            "mdx",
+            "graphql",
+          },
+          -- Respect local .prettierrc if present; fall back to these
+          extra_args = function(params)
+            local rc = vim.fn.findfile(".prettierrc", params.root .. ";")
+            if rc ~= "" then
+              return {}
+            end
+            return {
+              "--single-quote",
+              "--trailing-comma",
+              "es5",
+              "--print-width",
+              "100",
+            }
+          end,
+          -- Don't clobber files that declare their own formatter via
+          -- a `prettier` key in package.json
+          condition = function(utils)
+            return not utils.root_has_file({ ".prettierignore" })
+              or not utils.root_has_file({ ".prettierrc.js", ".prettierrc.cjs" })
+          end,
+        }),
 
-				-- Go
-				formatting.gofumpt,
-				formatting.goimports,
+        -- ── Lua ──────────────────────────────────────────────────────────────
+        formatting.stylua.with({
+          extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
+          -- Prefer project-level stylua.toml when present
+          condition = function(utils)
+            return utils.root_has_file({ "stylua.toml", ".stylua.toml" }) or true -- fall back to extra_args above if no config file
+          end,
+        }),
 
-				-- Shell
-				formatting.shfmt,
+        -- ── Python ───────────────────────────────────────────────────────────
+        require("none-ls.formatting.ruff_format").with({
+          extra_args = { "--line-length", "100" },
+        }),
+        require("none-ls.diagnostics.ruff").with({
+          extra_args = { "--select", "E,F,W,I,N,UP,B,C4,SIM,RUF" },
+        }),
 
-				-- SQL
-				formatting.sqlfluff.with({ extra_args = { "--dialect", "mysql" } }),
-				diagnostics.sqlfluff,
-			},
-		})
-	end,
+        -- ── Go ───────────────────────────────────────────────────────────────
+        formatting.gofumpt,
+        formatting.goimports.with({
+          extra_args = { "-local", "" }, -- Replace with your module path for local grouping
+        }),
+
+        -- ── Shell ─────────────────────────────────────────────────────────────
+        formatting.shfmt.with({
+          extra_args = { "-i", "2", "-ci", "-sr" }, -- 2-space indent, case-indent, space after redirect
+          filetypes = { "sh", "bash", "zsh" },
+        }),
+
+        -- ── SQL ───────────────────────────────────────────────────────────────
+        formatting.sqlfluff.with({
+          extra_args = { "--dialect", "mysql" }, -- Change to ansi/postgres/bigquery as needed
+        }),
+        diagnostics.sqlfluff.with({
+          extra_args = { "--dialect", "mysql" },
+        }),
+
+        -- ── Dockerfile ────────────────────────────────────────────────────────
+        diagnostics.hadolint,
+
+        -- ── Markdown ──────────────────────────────────────────────────────────
+        diagnostics.markdownlint.with({
+          extra_args = { "--disable", "MD013" }, -- Disable line-length rule (prettier handles it)
+        }),
+      },
+
+      -- Diagnostics appear only after the buffer is saved to reduce noise
+      on_attach = function(_, bufnr)
+        vim.api.nvim_buf_set_option(bufnr, "formatexpr", "") -- Let null-ls own gq
+      end,
+    })
+  end,
 }

@@ -3,22 +3,22 @@ return {
   event = { "BufReadPre", "BufNewFile" }, -- No need to load before a file is open
   opts = {
     -- ── Gutter signs ────────────────────────────────────────────────────────
-    signs_staged_enable =signs = {
-      add          = { text = "┃" },  -- strong presence
-      change       = { text = "│" },  -- thinner = modification
-      delete       = { text = "▁" },  -- removed
-      topdelete    = { text = "▔" },  -- removed above
-      changedelete = { text = "┆" },  -- mixed state
-      untracked    = { text = "┊" },  -- dotted = new/unstable
+    signs = {
+      add = { text = " ▎" },
+      change = { text = " ▎" },
+      delete = { text = " _ " },
+      topdelete = { text = " __ " },
+      changedelete = { text = " ▎" },
+      untracked = { text = " ▎" },
     },
-
     signs_staged = {
-      add          = { text = "┃" },
-      change       = { text = "│" },
-      delete       = { text = "▁" },
-      topdelete    = { text = "▔" },
-      changedelete = { text = "┆" },
-    }, true,
+      add = { text = " ▎" },
+      change = { text = " ▎" },
+      delete = { text = " _ " },
+      topdelete = { text = " __ " },
+      changedelete = { text = " ▎" },
+    },
+    signs_staged_enable = true,
 
     -- ── Blame ────────────────────────────────────────────────────────────────
     current_line_blame = false, -- Toggle with <leader>gb

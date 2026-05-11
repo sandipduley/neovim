@@ -49,7 +49,7 @@ return {
       enable_autosnippets = true,
     })
 
-    -- ─── Icons ───────────────────────────────────────────────────
+    -- ─── Icons ────────────────────────────────────────────────────
     local kind_icons = {
       Text = "󰉿",
       Method = "󰊕",
@@ -87,7 +87,7 @@ return {
       cmdline = "Cmd",
     }
 
-    -- ─── Helpers ─────────────────────────────────────────────────
+    -- ─── Helpers ──────────────────────────────────────────────────
     local function has_words_before()
       local line, col = unpack(vim.api.nvim_win_get_cursor(0))
       return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
@@ -253,21 +253,24 @@ return {
     })
 
     -- ─── Cmdline: commands (:) ────────────────────────────────────
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline({
-    ["<Tab>"] = {
-      c = function()
-        if cmp.visible() then
-          cmp.confirm({ select = true })
-        else
-          cmp.complete()
-        end
-      end,
-    },
-  }),
-  sources = cmp.config.sources(
-    { { name = "path" } },
-    { { name = "cmdline", option = { ignore_cmds = { "Man", "!" } } } }
-  ),
-  matching = { disallow_symbol_nonprefix_matching = false },
-})
+    -- Tab confirms the current match instead of jumping to the next one
+    cmp.setup.cmdline(":", {
+      mapping = cmp.mapping.preset.cmdline({
+        ["<Tab>"] = {
+          c = function()
+            if cmp.visible() then
+              cmp.confirm({ select = true })
+            else
+              cmp.complete()
+            end
+          end,
+        },
+      }),
+      sources = cmp.config.sources(
+        { { name = "path" } },
+        { { name = "cmdline", option = { ignore_cmds = { "Man", "!" } } } }
+      ),
+      matching = { disallow_symbol_nonprefix_matching = false },
+    })
+  end,
+}

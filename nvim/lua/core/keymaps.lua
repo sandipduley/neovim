@@ -61,11 +61,6 @@ vim.keymap.set("n", "<leader>x", "<cmd>Bdelete!<CR>", opts)
 vim.keymap.set("n", "<leader>bn", "<cmd>enew<CR>", opts)
 vim.keymap.set("n", "<C-i>", "<C-i>", opts)
 
--- ── Tab management ────────────────────────────────────────────────────────────
-vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", opts)
-vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", opts)
-vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", opts)
-
 -- ── Insert mode escape ────────────────────────────────────────────────────────
 vim.keymap.set("i", "jj", "<Esc>:w<CR>", opts)
 vim.keymap.set("i", "jk", "<Esc>:w<CR>", opts)

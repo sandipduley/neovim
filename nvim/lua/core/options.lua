@@ -8,6 +8,7 @@ vim.opt.signcolumn = "yes" -- always show signcolumn
 vim.opt.showmode = false -- hidden (lualine shows it)
 vim.opt.showtabline = 1 -- only when >1 tab
 vim.opt.cmdheight = 1
+vim.opt.more = false
 
 -- ── Window / Scrolling ────────────────────────────────────────────────────────
 vim.opt.wrap = true

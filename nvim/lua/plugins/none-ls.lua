@@ -18,6 +18,10 @@ return {
         "prettier", -- JS / TS / HTML / CSS / JSON / YAML / Markdown
         "stylua", -- Lua
         "ruff", -- Python (format + lint)
+        "gofumpt", -- Go – strict gofmt superset
+        "goimports", -- Go – organise imports
+        "shfmt", -- Shell
+        "sqlfluff", -- SQL
         "hadolint", -- Dockerfile
         "markdownlint", -- Markdown lint
       },

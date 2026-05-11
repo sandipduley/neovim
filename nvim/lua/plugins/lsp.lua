@@ -139,8 +139,10 @@ return {
 
         -- ── Code Lens ────────────────────────────────────────────
         if client and client:supports_method(methods.textDocument_codeLens) then
-          lsp.codelens.enable(true, { bufnr = buf })
           map("<leader>cl", lsp.codelens.run, "Run Code Lens")
+          map("<leader>cL", function()
+            vim.lsp.codelens.refresh()
+          end, "Refresh Code Lens")
         end
 
         -- ── Format on Save ───────────────────────────────────────

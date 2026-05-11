@@ -20,6 +20,7 @@ vim.opt.rtp:prepend(lazypath)
 -- ── Core config (must run before plugins) ─────────────────────────────────────
 require("core.options")
 require("core.keymaps")
+require("core.snippets")
 
 -- ── Plugins ───────────────────────────────────────────────────────────────────
 require("lazy").setup({

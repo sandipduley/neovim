@@ -8,7 +8,6 @@ vim.opt.signcolumn = "yes" -- always show signcolumn
 vim.opt.showmode = false -- hidden (lualine shows it)
 vim.opt.showtabline = 1 -- only when >1 tab
 vim.opt.cmdheight = 1
-vim.opt.conceallevel = 0 -- show markdown backticks
 
 -- ── Window / Scrolling ────────────────────────────────────────────────────────
 vim.opt.wrap = true
@@ -45,8 +44,7 @@ vim.opt.writebackup = false
 vim.opt.swapfile = false
 
 -- ── Completion ────────────────────────────────────────────────────────────────
-vim.opt.completeopt = "menuone,noselect"
-vim.opt.pumheight = 10
+vim.opt.completeopt = "menu,menuone,noinsert"
 vim.opt.shortmess:append("c") -- suppress completion messages
 vim.opt.shortmess:remove("S") -- show search count while typing, e.g. [2/8]
 
@@ -66,22 +64,29 @@ vim.opt.fixeol = true -- ensure single newline at end of file
 vim.opt.formatoptions:remove({ "c", "r", "o" }) -- no auto comment continuation
 vim.opt.iskeyword:append("-") -- hyphenated-words as one token
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown" },
+  callback = function()
+    vim.opt_local.conceallevel = 2
+  end,
+})
+
 -- ── Runtime path ──────────────────────────────────────────────────────────────
 vim.opt.runtimepath:remove("/usr/share/vim/vimfiles")
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "go", "python", "html", "css", "javascript" },
-	callback = function()
-		local ft_commentstrings = {
-			go = "// %s",
-			python = "# %s",
-			html = "<!-- %s -->",
-			css = "/* %s */",
-			javascript = "// %s",
-		}
-		local cs = ft_commentstrings[vim.bo.filetype]
-		if cs then
-			vim.bo.commentstring = cs
-		end
-	end,
+  pattern = { "go", "python", "html", "css", "javascript" },
+  callback = function()
+    local ft_commentstrings = {
+      go = "// %s",
+      python = "# %s",
+      html = "<!-- %s -->",
+      css = "/* %s */",
+      javascript = "// %s",
+    }
+    local cs = ft_commentstrings[vim.bo.filetype]
+    if cs then
+      vim.bo.commentstring = cs
+    end
+  end,
 })

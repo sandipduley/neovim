@@ -19,13 +19,20 @@ return {
       close = "#565f89", -- inactive close btn
       close_sel = "#f7768e", -- active close btn (red)
       sep_sel = "#bb9af7", -- selected separator (purple)
+      num = "#7dcfff", -- ordinal number (cyan)
+      num_sel = "#c0caf5", -- ordinal number active (fg)
     }
 
     bufferline.setup({
       options = {
         mode = "buffers",
         themable = true,
-        numbers = "none",
+
+        -- Show ordinal numbers: 1, 2, 3 ...
+        numbers = function(opts)
+          return string.format("%s", opts.ordinal)
+        end,
+
         close_command = "Bdelete! %d",
         right_mouse_command = "Bdelete! %d",
         left_mouse_command = "buffer %d",
@@ -105,9 +112,10 @@ return {
         -- ── Trunc markers ─────────────────────────────────────────────────
         trunc_marker = { fg = c.muted, bg = c.bg },
 
-        -- ── Tab number (when numbers enabled) ─────────────────────────────
-        numbers = { fg = c.muted, bg = c.bg },
-        numbers_selected = { fg = c.selected, bg = c.bg, bold = true },
+        -- ── Numbers ───────────────────────────────────────────────────────
+        numbers = { fg = c.num, bg = c.bg },
+        numbers_visible = { fg = c.muted, bg = c.bg },
+        numbers_selected = { fg = c.num_sel, bg = c.bg, bold = true },
       },
     })
 
@@ -119,6 +127,7 @@ return {
     map("<Tab>", "<Cmd>BufferLineCycleNext<CR>", "Buffer: next")
     map("<S-Tab>", "<Cmd>BufferLineCyclePrev<CR>", "Buffer: prev")
 
+    -- Jump directly to buffer by ordinal number (<leader>1 through <leader>9)
     for i = 1, 9 do
       map(
         "<leader>" .. i,

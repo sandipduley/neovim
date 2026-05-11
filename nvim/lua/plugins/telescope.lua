@@ -2,7 +2,26 @@ return {
   "nvim-telescope/telescope.nvim",
   branch = "master",
   cmd = "Telescope",
-  keys = "<leader>",
+  keys = {
+    { "<leader>sf" },
+    { "<leader>sg" },
+    { "<leader>gl" },
+    { "<leader>sb" },
+    { "<leader>sh" },
+    { "<leader>sd" },
+    { "<leader>sr" },
+    { "<leader>so" },
+    { "<leader>sm" },
+    { "<leader>gf" },
+    { "<leader>gc" },
+    { "<leader>gcf" },
+    { "<leader>gS" },
+    { "<leader>sy" }, -- was <leader>sds (renamed to avoid timeout conflict with <leader>sd)
+    { "<leader>s/" },
+    { "<leader>/" },
+    { "<leader><tab>" },
+    { "<leader>bb" },
+  },
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
@@ -22,7 +41,6 @@ return {
     local actions = require("telescope.actions")
     local themes = require("telescope.themes")
 
-    -- Helper function for keymaps
     local function map_keys(maps)
       for mode, bindings in pairs(maps) do
         for key, action in pairs(bindings) do
@@ -34,7 +52,7 @@ return {
     telescope.setup({
       defaults = {
         sorting_strategy = "ascending",
-        prompt_prefix = "   ",
+        prompt_prefix = "   ",
         selection_caret = "❯ ",
         winblend = 5,
 
@@ -97,39 +115,36 @@ return {
       },
     })
 
-    -- Load extensions safely
     pcall(telescope.load_extension, "fzf")
     pcall(telescope.load_extension, "ui-select")
 
-    -- Keymaps
-    -- Keymaps
     map_keys({
       n = {
         -- Buffers & Marks
-        ["<leader>sb"] = builtin.buffers, -- Search open buffers
-        ["<leader><tab>"] = builtin.buffers, -- Search open buffers (tab shortcut)
-        ["<leader>bb"] = builtin.buffers, -- Search open buffers (buffer prefix)
-        ["<leader>sm"] = builtin.marks, -- Search marks
-        ["<leader>so"] = builtin.oldfiles, -- Search recently opened files
+        ["<leader>sb"] = builtin.buffers,
+        ["<leader><tab>"] = builtin.buffers,
+        ["<leader>bb"] = builtin.buffers,
+        ["<leader>sm"] = builtin.marks,
+        ["<leader>so"] = builtin.oldfiles,
 
         -- Git
-        ["<leader>gf"] = builtin.git_files, -- Search git-tracked files
-        ["<leader>gc"] = builtin.git_commits, -- Search git commit log
-        ["<leader>gcf"] = builtin.git_bcommits, -- Search commits for current buffer
-        ["<leader>gb"] = builtin.git_branches, -- Search and switch git branches
-        ["<leader>gS"] = builtin.git_status, -- Search files with git changes
+        ["<leader>gf"] = builtin.git_files,
+        ["<leader>gc"] = builtin.git_commits,
+        ["<leader>gcf"] = builtin.git_bcommits,
+        ["<leader>gb"] = builtin.git_branches, -- no longer clashes (gitsigns blame moved to <leader>gbl)
+        ["<leader>gS"] = builtin.git_status, -- no longer clashes (gitsigns stage_buffer moved to <leader>gA)
 
         -- Search
-        ["<leader>sf"] = builtin.find_files, -- Search all files (including hidden)
-        ["<leader>sh"] = builtin.help_tags, -- Search Neovim help tags
-        ["<leader>sg"] = builtin.grep_string, -- Grep for word under cursor
-        ["<leader>gl"] = builtin.live_grep, -- Live grep across project
-        ["<leader>sd"] = builtin.diagnostics, -- Search LSP diagnostics
-        ["<leader>sr"] = builtin.resume, -- Resume last Telescope picker
+        ["<leader>sf"] = builtin.find_files,
+        ["<leader>sh"] = builtin.help_tags,
+        ["<leader>sg"] = builtin.grep_string,
+        ["<leader>gl"] = builtin.live_grep,
+        ["<leader>sd"] = builtin.diagnostics,
+        ["<leader>sr"] = builtin.resume,
 
-        -- LSP Symbols
-        ["<leader>sds"] = function()
-          builtin.lsp_document_symbols({ -- Search LSP symbols in current buffer
+        -- LSP Symbols (renamed from <leader>sds to avoid 300ms timeout on <leader>sd)
+        ["<leader>sy"] = function()
+          builtin.lsp_document_symbols({
             symbols = {
               "Class",
               "Function",
@@ -142,7 +157,7 @@ return {
           })
         end,
 
-        -- Live grep in open files only (not whole project)
+        -- Grep in open files only
         ["<leader>s/"] = function()
           builtin.live_grep({
             grep_open_files = true,
@@ -150,7 +165,7 @@ return {
           })
         end,
 
-        -- Fuzzy search within the current buffer (dropdown, no preview)
+        -- Fuzzy search current buffer
         ["<leader>/"] = function()
           builtin.current_buffer_fuzzy_find(themes.get_dropdown({ previewer = false }))
         end,

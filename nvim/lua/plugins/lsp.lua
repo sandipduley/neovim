@@ -31,11 +31,7 @@ return {
           [vim.diagnostic.severity.INFO] = " ",
         },
       },
-      virtual_text = {
-        spacing = 4,
-        source = "if_many",
-        prefix = "●",
-      },
+      virtual_text = { false },
       float = {
         border = "rounded",
         source = true,

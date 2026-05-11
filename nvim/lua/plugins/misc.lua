@@ -7,10 +7,9 @@ return {
     config = true, -- Use default setup (auto-pairs brackets, quotes, etc.)
   },
   {
-    "windwp/nvim-ts-autotag", -- Auto-close and rename HTML/JSX tags
-    -- No lazy-loading needed; lightweight plugin
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPre", "BufNewFile" },
   },
-
   -- Editing Helpers
 
   {

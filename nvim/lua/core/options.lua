@@ -9,6 +9,8 @@ vim.opt.showmode = false -- hidden (lualine shows it)
 vim.opt.showtabline = 1 -- only when >1 tab
 vim.opt.cmdheight = 1
 vim.opt.more = false
+vim.opt.wildmenu = true
+vim.opt.wildmode = "longest:full,full"
 
 -- ── Window / Scrolling ────────────────────────────────────────────────────────
 vim.opt.wrap = true

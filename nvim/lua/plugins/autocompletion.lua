@@ -253,13 +253,21 @@ return {
     })
 
     -- ─── Cmdline: commands (:) ────────────────────────────────────
-    cmp.setup.cmdline(":", {
-      mapping = cmp.mapping.preset.cmdline(),
-      sources = cmp.config.sources(
-        { { name = "path" } },
-        { { name = "cmdline", option = { ignore_cmds = { "Man", "!" } } } }
-      ),
-      matching = { disallow_symbol_nonprefix_matching = false },
-    })
-  end,
-}
+cmp.setup.cmdline(":", {
+  mapping = cmp.mapping.preset.cmdline({
+    ["<Tab>"] = {
+      c = function()
+        if cmp.visible() then
+          cmp.confirm({ select = true })
+        else
+          cmp.complete()
+        end
+      end,
+    },
+  }),
+  sources = cmp.config.sources(
+    { { name = "path" } },
+    { { name = "cmdline", option = { ignore_cmds = { "Man", "!" } } } }
+  ),
+  matching = { disallow_symbol_nonprefix_matching = false },
+})

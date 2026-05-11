@@ -117,7 +117,7 @@ cp -r nvim/ ~/.config/
 ## 🐋 Docker
 
 ```bash
-docker run -it --name custom-name sandipduley/neovim-udev /bin/bash
+docker run -it --name custom-name 0xlichi/neovim /bin/bash
 ```
 
 ---

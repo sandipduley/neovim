@@ -93,10 +93,6 @@ return {
         map("gK", function()
           lsp.buf.signature_help({ border = "rounded", max_width = 80 })
         end, "Signature Help")
-        map("<C-k>", function()
-          lsp.buf.signature_help({ border = "rounded", max_width = 80 })
-        end, "Signature Help", "i")
-
         -- ── Diagnostics ──────────────────────────────────────────
         map("[d", function()
           vim.diagnostic.jump({ count = -1 })
@@ -129,11 +125,6 @@ return {
 
         -- ── Inlay Hints ──────────────────────────────────────────
         if client and client:supports_method(methods.textDocument_inlayHint) then
-          map("<leader>th", function()
-            local enabled = lsp.inlay_hint.is_enabled({ bufnr = buf })
-            lsp.inlay_hint.enable(not enabled, { bufnr = buf })
-          end, "Toggle Inlay Hints")
-
           api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
             buffer = buf,
             group = hint_group,

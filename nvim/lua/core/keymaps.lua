@@ -2,7 +2,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-local opts = { noremap = true, silent = true }
+local opts = { silent = true }
 
 -- disable default space key behavior
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", opts)
@@ -57,14 +57,11 @@ vim.keymap.set("n", "<A-Left>", "<cmd>vertical resize -2<CR>", opts)
 vim.keymap.set("n", "<A-Right>", "<cmd>vertical resize +2<CR>", opts)
 
 -- ── Buffer management ─────────────────────────────────────────────────────────
-vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>", opts)
-vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>", opts)
 vim.keymap.set("n", "<leader>x", "<cmd>Bdelete!<CR>", opts)
-vim.keymap.set("n", "<leader>b", "<cmd>enew<CR>", opts)
+vim.keymap.set("n", "<leader>bn", "<cmd>enew<CR>", opts)
 vim.keymap.set("n", "<C-i>", "<C-i>", opts)
 
 -- ── Tab management ────────────────────────────────────────────────────────────
-vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", opts)
 vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", opts)
 vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", opts)
 vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", opts)
@@ -90,26 +87,26 @@ vim.keymap.set("n", "<leader>j", "*``cgn", opts)
 
 -- Wrap toggle — enables wrap AND disables horizontal scroll at the same time
 vim.keymap.set("n", "<leader>lw", function()
-	local wrapped = vim.wo.wrap
-	vim.wo.wrap = not wrapped
-	vim.wo.sidescrolloff = wrapped and 8 or 0
-	vim.o.sidescroll = wrapped and 1 or 0
-	print(wrapped and "Wrap OFF" or "Wrap ON")
+  local wrapped = vim.wo.wrap
+  vim.wo.wrap = not wrapped
+  vim.wo.sidescrolloff = wrapped and 8 or 0
+  vim.o.sidescroll = wrapped and 1 or 0
+  print(wrapped and "Wrap OFF" or "Wrap ON")
 end, opts)
 
 -- ── Diagnostics ───────────────────────────────────────────────────────────────
 local diagnostics_enabled = true
 vim.keymap.set("n", "<leader>do", function()
-	diagnostics_enabled = not diagnostics_enabled
-	vim.diagnostic.enable(diagnostics_enabled)
+  diagnostics_enabled = not diagnostics_enabled
+  vim.diagnostic.enable(diagnostics_enabled)
 end, opts)
 
 vim.keymap.set("n", "[d", function()
-	vim.diagnostic.jump({ count = -1, float = true })
+  vim.diagnostic.jump({ count = -1, float = true })
 end, opts)
 
 vim.keymap.set("n", "]d", function()
-	vim.diagnostic.jump({ count = 1, float = true })
+  vim.diagnostic.jump({ count = 1, float = true })
 end, opts)
 
 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
@@ -122,4 +119,3 @@ vim.keymap.set("n", "<leader>sl", "<cmd>source .session.vim<CR>", opts)
 -- ── Tiny inline diagnostics ───────────────────────────────────────────────────
 vim.keymap.set("n", "<leader>ed", "<cmd>TinyInlineDiag enable<CR>", opts)
 vim.keymap.set("n", "<leader>dd", "<cmd>TinyInlineDiag disable<CR>", opts)
-vim.keymap.set("n", "<leader>td", "<cmd>TinyInlineDiag toggle<CR>", opts)

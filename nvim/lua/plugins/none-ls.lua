@@ -28,7 +28,7 @@ return {
       automatic_installation = true,
     })
 
-    -- ── Format-on-save (opt-in per buffer with <leader>tf) ─────────────────────
+    -- ── Format-on-save (opt-in per buffer with <leader>of) ─────────────────────
     local fmt_enabled = true -- global toggle
 
     local fmt_augroup = vim.api.nvim_create_augroup("NoneLsFmt", { clear = true })
@@ -45,7 +45,7 @@ return {
       end,
     })
 
-    vim.keymap.set("n", "<leader>tf", function()
+    vim.keymap.set("n", "<leader>of", function()
       fmt_enabled = not fmt_enabled
       vim.notify("Format-on-save " .. (fmt_enabled and "enabled" or "disabled"), vim.log.levels.INFO)
     end, { desc = "None-ls: toggle format-on-save" })

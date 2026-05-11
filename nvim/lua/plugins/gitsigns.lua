@@ -21,7 +21,7 @@ return {
     signs_staged_enable = true,
 
     -- ── Blame ────────────────────────────────────────────────────────────────
-    current_line_blame = false, -- Toggle with <leader>gb
+    current_line_blame = false, -- Toggle with <leader>gbl
     current_line_blame_opts = {
       virt_text = true,
       virt_text_pos = "eol",
@@ -84,7 +84,7 @@ return {
       -- Hunk actions
       map({ "n", "v" }, "<leader>gs", gs.stage_hunk, "Git: stage hunk")
       map({ "n", "v" }, "<leader>gr", gs.reset_hunk, "Git: reset hunk")
-      map("n", "<leader>gS", gs.stage_buffer, "Git: stage buffer")
+      map("n", "<leader>ga", gs.stage_buffer, "Git: stage buffer")
       map("n", "<leader>gR", gs.reset_buffer, "Git: reset buffer")
       map("n", "<leader>gu", gs.undo_stage_hunk, "Git: undo stage hunk")
 
@@ -93,10 +93,10 @@ return {
       map("n", "<leader>gP", gs.preview_hunk_inline, "Git: preview hunk inline")
 
       -- Blame
-      map("n", "<leader>gb", function()
+      map("n", "<leader>gbl", function()
         gs.toggle_current_line_blame()
       end, "Git: toggle line blame")
-      map("n", "<leader>gB", function()
+      map("n", "<leader>gbf", function()
         gs.blame_line({ full = true }) -- Full commit message in float
       end, "Git: blame line (full)")
 

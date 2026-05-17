@@ -63,6 +63,7 @@ vim.keymap.set("n", "<C-i>", "<C-i>", opts)
 
 -- ── Insert mode escape ────────────────────────────────────────────────────────
 vim.keymap.set("i", "jj", "<Esc>:w<CR>", opts)
+vim.keymap.set("i", "<Esc>", "<Esc>:w<CR>", opts)
 vim.keymap.set("i", "jk", "<Esc>:w<CR>", opts)
 vim.keymap.set("i", "kk", "<Esc>:wq<CR>", opts)
 

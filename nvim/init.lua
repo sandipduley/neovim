@@ -33,7 +33,6 @@ require("lazy").setup({
     { import = "plugins.misc" },
     { import = "plugins.gitsigns" },
     { import = "plugins.indent-blankline" },
-    { import = "plugins.lazygit" },
     { import = "plugins.lualine" },
     { import = "plugins.lsp" },
     { import = "plugins.none-ls" },
